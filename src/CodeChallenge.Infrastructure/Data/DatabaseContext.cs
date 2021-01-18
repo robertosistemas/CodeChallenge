@@ -1,4 +1,5 @@
-﻿using CodeChallenge.Domain.Abstractions;
+﻿using AutoMapper;
+using CodeChallenge.Domain.Abstractions;
 using CodeChallenge.Domain.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -13,13 +14,15 @@ namespace CodeChallenge.Infrastructure.Data
 {
     public class DatabaseContext : IDatabaseContext
     {
+        private readonly IMapper _mapper;
         private readonly IMemoryCache _cache;
         private readonly string _inputBackEndType;
         private readonly string _inputBackEndCsvUrl;
         private readonly string _inputBackEndJsonUrl;
 
-        public DatabaseContext(IConfiguration configuration, IMemoryCache cache)
+        public DatabaseContext(IConfiguration configuration, IMapper mapper, IMemoryCache cache)
         {
+            _mapper = mapper;
             _inputBackEndType = configuration["InputBackEnd:Type"];
             _inputBackEndCsvUrl = configuration["InputBackEnd:CsvUrl"];
             _inputBackEndJsonUrl = configuration["InputBackEnd:JsonUrl"];
@@ -52,11 +55,13 @@ namespace CodeChallenge.Infrastructure.Data
             {
                 result = new List<User>();
                 var json = await GeDataFromUrlAsync(_inputBackEndJsonUrl);
-                var usersResult = JsonSerializer.Deserialize<UsersResult>(json);
+                var usersResult = JsonSerializer.Deserialize<UsersImportResult>(json);
                 foreach (var item in usersResult.Results)
                 {
                     var currentItem = item;
-                    result.Add(currentItem);
+                    // Aplicar regras na criação de usuários
+                    var user = _mapper.Map<User>(currentItem);
+                    result.Add(user);
                 }
                 if (result.Count > 0)
                     _cache.Set("inputBackEndJsonUrl", result);
@@ -77,8 +82,10 @@ namespace CodeChallenge.Infrastructure.Data
                 {
                     if (!string.IsNullOrWhiteSpace(item) && count > 0)
                     {
-                        var currentItem = item;
-                        result.Add(ConvertCsvToUserAsync(currentItem));
+                        var currentItem = ConvertCsvToUserAsync(item);
+                        // Aplicar regras na criação de usuários
+                        var user = _mapper.Map<User>(currentItem);
+                        result.Add(user);
                     }
                     count += 1;
                 }
@@ -111,7 +118,7 @@ namespace CodeChallenge.Infrastructure.Data
         private const int PICTURE_MEDIUM = 20;
         private const int PICTURE_THUMBNAIL = 21;
 
-        private User ConvertCsvToUserAsync(string currentItem)
+        private UserImport ConvertCsvToUserAsync(string currentItem)
         {
             if (currentItem.StartsWith("\""))
                 currentItem = currentItem[1..];
@@ -121,7 +128,7 @@ namespace CodeChallenge.Infrastructure.Data
 
             var record = currentItem.Split("\",\"");
 
-            return new User
+            return new UserImport
             {
                 Gender = record[GENDER],
                 Name = new Name

@@ -17,14 +17,9 @@ namespace CodeChallenge.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<UsersResultDto> Get()
+        public async Task<UsersResultDto> Get(UserPagedDto userPagedDto)
         {
-            var userPagedDto = new UserPagedDto
-            {
-                PageSize = 1,
-                PageNumber = 2
-
-            };
+            userPagedDto.Normalize();
             return await _userServices.GetUsersAsync(userPagedDto);
         }
     }

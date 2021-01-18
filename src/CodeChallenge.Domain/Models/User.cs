@@ -1,9 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CodeChallenge.Domain.Models
 {
     public class User
     {
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+
         [JsonPropertyName("gender")]
         public string Gender { get; set; }
 
@@ -16,19 +21,22 @@ namespace CodeChallenge.Domain.Models
         [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [JsonPropertyName("dob")]
-        public Dob Dob { get; set; }
+        [JsonPropertyName("birthday")]
+        public DateTime Birthday { get; set; }
 
         [JsonPropertyName("registered")]
-        public Registered Registered { get; set; }
+        public DateTime Registered { get; set; }
 
-        [JsonPropertyName("phone")]
-        public string Phone { get; set; }
+        [JsonPropertyName("telephoneNumbers")]
+        public List<string> TelephoneNumbers { get; set; }
 
-        [JsonPropertyName("cell")]
-        public string Cell { get; set; }
+        [JsonPropertyName("mobileNumbers")]
+        public List<string> MobileNumbers { get; set; }
 
         [JsonPropertyName("picture")]
         public Picture Picture { get; set; }
+
+        [JsonPropertyName("nationality")]
+        public string Nationality { get; set; }
     }
 }

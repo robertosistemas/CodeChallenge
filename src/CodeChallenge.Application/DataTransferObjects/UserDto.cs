@@ -1,9 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CodeChallenge.Application.DataTransferObjects
 {
     public class UserDto
     {
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+
         [JsonPropertyName("gender")]
         public string Gender { get; set; }
 
@@ -16,19 +21,22 @@ namespace CodeChallenge.Application.DataTransferObjects
         [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [JsonPropertyName("dob")]
-        public DobDto Dob { get; set; }
+        [JsonPropertyName("birthday")]
+        public DateTime Birthday { get; set; }
 
         [JsonPropertyName("registered")]
-        public RegisteredDto Registered { get; set; }
+        public DateTime Registered { get; set; }
 
-        [JsonPropertyName("phone")]
-        public string Phone { get; set; }
+        [JsonPropertyName("telephoneNumbers")]
+        public List<string> TelephoneNumbers { get; set; }
 
-        [JsonPropertyName("cell")]
-        public string Cell { get; set; }
+        [JsonPropertyName("mobileNumbers")]
+        public List<string> MobileNumbers { get; set; }
 
         [JsonPropertyName("picture")]
         public PictureDto Picture { get; set; }
+
+        [JsonPropertyName("nationality")]
+        public string Nationality { get; set; }
     }
 }

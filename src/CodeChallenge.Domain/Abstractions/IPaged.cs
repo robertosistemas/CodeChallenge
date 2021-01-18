@@ -4,5 +4,6 @@
     {
         int PageNumber { get; set; }
         public int PageSize { get; set; }
+        void Normalize();
     }
 }

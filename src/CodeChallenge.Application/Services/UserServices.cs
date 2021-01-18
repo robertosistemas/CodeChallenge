@@ -21,7 +21,7 @@ namespace CodeChallenge.Application.Services
             var (Itens, TotalCount) = await _userRepository.GetAllAsync(userPagedDto);
             return new UsersResultDto
             {
-                Results = _mapper.Map<List<UserDto>>(Itens),
+                Users = _mapper.Map<List<UserDto>>(Itens),
                 PageNumber = userPagedDto.PageNumber,
                 PageSize = userPagedDto.PageSize,
                 TotalCount = TotalCount
