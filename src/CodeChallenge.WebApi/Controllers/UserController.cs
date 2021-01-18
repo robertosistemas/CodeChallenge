@@ -17,7 +17,7 @@ namespace CodeChallenge.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<UsersResultDto> Get(UserPagedDto userPagedDto)
+        public async Task<UsersResultDto> Get([FromQuery] UserPagedDto userPagedDto)
         {
             userPagedDto.Normalize();
             return await _userServices.GetUsersAsync(userPagedDto);

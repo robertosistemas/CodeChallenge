@@ -39,6 +39,17 @@ namespace CodeChallenge.WebApi
             services.AddScoped<IDatabaseContext, DatabaseContext>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserServices, UserServices>();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Juntos Somos Mais API",
+                    Version = "v1",
+                    Description = "Juntos Somos Mais - Challenge",
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +71,10 @@ namespace CodeChallenge.WebApi
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Juntos Somos Mais - Challenge"));
+
         }
     }
 }
