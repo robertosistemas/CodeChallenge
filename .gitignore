@@ -48,3 +48,16 @@ Thumbs.db
 *.mov
 *.wmv
 
+/.vs
+/test/CodeChallenge.IntegrationsTests/obj
+/test/CodeChallenge.IntegrationsTests/bin/Debug/netcoreapp3.1
+/test/CodeChallenge.UnitsTests/bin/Debug/netcoreapp3.1
+/test/CodeChallenge.UnitsTests/obj
+/src/CodeChallenge.WebApi/obj
+/src/CodeChallenge.WebApi/bin/Debug/netcoreapp3.1
+/src/CodeChallenge.Infrastructure/obj
+/src/CodeChallenge.Infrastructure/bin/Debug/netcoreapp3.1
+/src/CodeChallenge.Domain/bin/Debug/netcoreapp3.1
+/src/CodeChallenge.Domain/obj
+/src/CodeChallenge.Application/bin/Debug/netcoreapp3.1
+/src/CodeChallenge.Application/obj
