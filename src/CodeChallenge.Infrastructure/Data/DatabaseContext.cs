@@ -20,10 +20,10 @@ namespace CodeChallenge.Infrastructure.Data
 
         public DatabaseContext(IConfiguration configuration, IMemoryCache cache)
         {
-            _cache = cache;
             _inputBackEndType = configuration["InputBackEnd:Type"];
             _inputBackEndCsvUrl = configuration["InputBackEnd:CsvUrl"];
             _inputBackEndJsonUrl = configuration["InputBackEnd:JsonUrl"];
+            _cache = cache;
         }
 
         public async Task<List<User>> GetDataAsync()
@@ -88,86 +88,85 @@ namespace CodeChallenge.Infrastructure.Data
             return result;
         }
 
+        private const int GENDER = 0;
+        private const int NAME_TITLE = 1;
+        private const int NAME_FIRST = 2;
+        private const int NAME_LAST = 3;
+        private const int LOCATION_STREET = 4;
+        private const int LOCATION_CITY = 5;
+        private const int LOCATION_STATE = 6;
+        private const int LOCATION_POSTCODE = 7;
+        private const int LOCATION_COORDINATES_LATITUDE = 8;
+        private const int LOCATION_COORDINATES_LONGITUDE = 9;
+        private const int LOCATION_TIMEZONE_OFFSET = 10;
+        private const int LOCATION_TIMEZONE_DESCRIPTION = 11;
+        private const int EMAIL = 12;
+        private const int DOB_DATE = 13;
+        private const int DOB_AGE = 14;
+        private const int REGISTERED_DATE = 15;
+        private const int REGISTERED_AGE = 16;
+        private const int PHONE = 17;
+        private const int CELL = 18;
+        private const int PICTURE_LARGE = 19;
+        private const int PICTURE_MEDIUM = 20;
+        private const int PICTURE_THUMBNAIL = 21;
+
         private User ConvertCsvToUserAsync(string currentItem)
         {
-            const int gender = 0;
-            const int name_title = 1;
-            const int name_first = 2;
-            const int name_last = 3;
-            const int location_street = 4;
-            const int location_city = 5;
-            const int location_state = 6;
-            const int location_postcode = 7;
-            const int location_coordinates_latitude = 8;
-            const int location_coordinates_longitude = 9;
-            const int location_timezone_offset = 10;
-            const int location_timezone_description = 11;
-            const int email = 12;
-            const int dob_date = 13;
-            const int dob_age = 14;
-            const int registered_date = 15;
-            const int registered_age = 16;
-            const int phone = 17;
-            const int cell = 18;
-            const int picture_large = 19;
-            const int picture_medium = 20;
-            const int picture_thumbnail = 21;
-
             if (currentItem.StartsWith("\""))
                 currentItem = currentItem[1..];
 
             if (currentItem.EndsWith("\""))
                 currentItem = currentItem[0..^1];
 
-            var registro = currentItem.Split("\",\"");
+            var record = currentItem.Split("\",\"");
 
             return new User
             {
-                Gender = registro[gender],
+                Gender = record[GENDER],
                 Name = new Name
                 {
-                    Title = registro[name_title],
-                    First = registro[name_first],
-                    Last = registro[name_last]
+                    Title = record[NAME_TITLE],
+                    First = record[NAME_FIRST],
+                    Last = record[NAME_LAST]
                 },
                 Location = new Location
                 {
-                    Street = registro[location_street],
-                    City = registro[location_city],
-                    State = registro[location_state],
-                    Postcode = Convert.ToInt32(registro[location_postcode]),
+                    Street = record[LOCATION_STREET],
+                    City = record[LOCATION_CITY],
+                    State = record[LOCATION_STATE],
+                    Postcode = Convert.ToInt32(record[LOCATION_POSTCODE]),
                     Coordinates = new Coordinates
                     {
-                        Latitude = registro[location_coordinates_latitude],
-                        Longitude = registro[location_coordinates_longitude]
+                        Latitude = record[LOCATION_COORDINATES_LATITUDE],
+                        Longitude = record[LOCATION_COORDINATES_LONGITUDE]
                     },
                     Timezone = new Timezone
                     {
-                        Offset = registro[location_timezone_offset],
-                        Description = registro[location_timezone_description]
+                        Offset = record[LOCATION_TIMEZONE_OFFSET],
+                        Description = record[LOCATION_TIMEZONE_DESCRIPTION]
                     }
                 },
-                Email = registro[email],
+                Email = record[EMAIL],
                 Dob = new Dob
                 {
-                    Date = Convert.ToDateTime(registro[dob_date]),
-                    Age = Convert.ToInt32(registro[dob_age])
+                    Date = Convert.ToDateTime(record[DOB_DATE]),
+                    Age = Convert.ToInt32(record[DOB_AGE])
                 },
                 Registered = new Registered
                 {
-                    Date = Convert.ToDateTime(registro[registered_date]),
-                    Age = Convert.ToInt32(registro[registered_age])
+                    Date = Convert.ToDateTime(record[REGISTERED_DATE]),
+                    Age = Convert.ToInt32(record[REGISTERED_AGE])
                 },
-                Phone = registro[phone],
-                Cell = registro[cell],
+                Phone = record[PHONE],
+                Cell = record[CELL],
                 Picture = new Picture
                 {
-                    Large = registro[picture_large],
-                    Medium = registro[picture_medium],
-                    Thumbnail = registro[picture_thumbnail]
+                    Large = record[PICTURE_LARGE],
+                    Medium = record[PICTURE_MEDIUM],
+                    Thumbnail = record[PICTURE_THUMBNAIL]
                 }
             };
         }
-
     }
 }
