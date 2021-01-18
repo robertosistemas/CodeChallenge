@@ -6,6 +6,9 @@ namespace CodeChallenge.Application.DataTransferObjects
 {
     public class UserDto
     {
+        [JsonPropertyName("id")]
+        public Guid Id { get; set; }
+
         [JsonPropertyName("type")]
         public string Type { get; set; }
 

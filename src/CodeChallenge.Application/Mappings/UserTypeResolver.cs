@@ -3,7 +3,7 @@ using CodeChallenge.Domain.Models;
 using System;
 using System.Globalization;
 
-namespace CodeChallenge.Domain.Mappings
+namespace CodeChallenge.Application.Mappings
 {
     public class UserTypeResolver : IValueResolver<UserImport, User, string>
     {

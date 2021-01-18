@@ -61,3 +61,4 @@ Thumbs.db
 /src/CodeChallenge.Domain/obj
 /src/CodeChallenge.Application/bin/Debug/netcoreapp3.1
 /src/CodeChallenge.Application/obj
+/src/CodeChallenge.WebApi/wwwroot/App_Data/output-backend.json

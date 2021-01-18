@@ -6,6 +6,14 @@ namespace CodeChallenge.Domain.Models
 {
     public class User
     {
+        public User()
+        {
+            this.Id = Guid.NewGuid();
+        }
+
+        [JsonPropertyName("id")]
+        public Guid Id { get; set; }
+
         [JsonPropertyName("type")]
         public string Type { get; set; }
 

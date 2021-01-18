@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -55,6 +56,8 @@ namespace CodeChallenge.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMapper mapper)
         {
+            AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(env.WebRootPath, "App_Data"));
+
             if (env.IsDevelopment())
             {
                 mapper.ConfigurationProvider.AssertConfigurationIsValid();

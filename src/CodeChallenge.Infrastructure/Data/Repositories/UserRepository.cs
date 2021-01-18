@@ -17,33 +17,54 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
             DatabaseContext = databaseContext;
         }
 
-        public Task AddAsync(User item)
+        public async Task<Guid> AddAsync(User item)
         {
-            throw new NotImplementedException();
+            var users = await DatabaseContext.GetDataAsync();
+            item.Id = Guid.NewGuid();
+            // Incluir registro na lista, salvar em disco, recarregar cache
+            return item.Id;
         }
-        public Task UpdateAsync(Guid id, User item)
+        public async Task UpdateAsync(Guid id, User item)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<User> GetAsync(Guid id)
-        {
-            throw new NotImplementedException();
+            var users = await DatabaseContext.GetDataAsync();
+            var user = users.FirstOrDefault(f => f.Id.Equals(id));
+            if (user == null)
+            {
+                // Atualizar registro na lista, salvar em disco, recarregar cache
+            }
         }
 
-        public async Task<(List<User> Itens, int TotalCount)> GetAllAsync(IPaged paged)
+        public async Task DeleteAsync(Guid id)
         {
-            var itens = await DatabaseContext.GetDataAsync();
-            var skip = (paged.PageNumber - 1) * paged.PageSize;
-            if (skip >= itens.Count)
-                skip = itens.Count;
-            var itensPaged = itens.Skip(skip).Take(paged.PageSize).ToList();
-            var result = (itensPaged, itens.Count);
+            var users = await DatabaseContext.GetDataAsync();
+            var user = users.FirstOrDefault(f => f.Id.Equals(id));
+            if (user == null)
+            {
+                // remover da lista, salvar em disco, recarregar cache
+            }
+        }
+
+        public async Task<User> GetAsync(Guid id)
+        {
+            var users = await DatabaseContext.GetDataAsync();
+            return users.FirstOrDefault(f => f.Id.Equals(id));
+        }
+
+        public async Task<(List<User> Itens, int TotalCount)> GetAllAsync(UserPaged userPaged)
+        {
+            var users = await DatabaseContext.GetDataAsync();
+
+            if (!string.IsNullOrWhiteSpace(userPaged.Region))
+                users = users.Where(f => f.Location.Region != null && f.Location.Region.Equals(userPaged.Region)).ToList();
+
+            if (!string.IsNullOrWhiteSpace(userPaged.Type))
+                users = users.Where(f => f.Type != null && f.Type.Equals(userPaged.Type)).ToList();
+
+            var skip = (userPaged.PageNumber - 1) * userPaged.PageSize;
+            if (skip >= users.Count)
+                skip = users.Count;
+            var itensPaged = users.Skip(skip).Take(userPaged.PageSize).ToList();
+            var result = (itensPaged, users.Count);
             return await Task.FromResult(result);
         }
     }

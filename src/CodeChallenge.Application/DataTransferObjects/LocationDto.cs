@@ -4,6 +4,9 @@ namespace CodeChallenge.Application.DataTransferObjects
 {
     public class LocationDto
     {
+        [JsonPropertyName("region")]
+        public string Region { get; set; }
+
         [JsonPropertyName("street")]
         public string Street { get; set; }
 

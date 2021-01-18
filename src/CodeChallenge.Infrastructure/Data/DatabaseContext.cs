@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -16,26 +18,59 @@ namespace CodeChallenge.Infrastructure.Data
     {
         private readonly IMapper _mapper;
         private readonly IMemoryCache _cache;
+        private readonly string _inputBackEndKey;
         private readonly string _inputBackEndType;
         private readonly string _inputBackEndCsvUrl;
         private readonly string _inputBackEndJsonUrl;
+        private readonly string _fileJson;
 
         public DatabaseContext(IConfiguration configuration, IMapper mapper, IMemoryCache cache)
         {
             _mapper = mapper;
+            _inputBackEndKey = "inputBackEndKey";
             _inputBackEndType = configuration["InputBackEnd:Type"];
             _inputBackEndCsvUrl = configuration["InputBackEnd:CsvUrl"];
             _inputBackEndJsonUrl = configuration["InputBackEnd:JsonUrl"];
+            _fileJson = $"{AppDomain.CurrentDomain.GetData("DataDirectory")}\\output-backend.json";
             _cache = cache;
         }
 
         public async Task<List<User>> GetDataAsync()
         {
+            if (File.Exists(_fileJson))
+            {
+                return await GeDataFromFileAsync();
+            }
             if (_inputBackEndType.Equals("csv"))
             {
                 return await GetDataFromCsvAsync();
             }
             return await GetDataFromJsonAsync();
+        }
+
+        private async Task<List<User>> GeDataFromFileAsync()
+        {
+            var result = (List<User>)_cache.Get(_inputBackEndKey);
+            if (result == null)
+            {
+                var json = File.ReadAllText(_fileJson);
+                result = JsonSerializer.Deserialize<List<User>>(json);
+                if (result.Count > 0)
+                {
+                    _cache.Set(_inputBackEndKey, result);
+                }
+            }
+            return await Task.FromResult(result);
+        }
+
+        private void SaveDataToFileAsync(List<User> users)
+        {
+            if (File.Exists(_fileJson))
+            {
+                File.Delete(_fileJson);
+            }
+            var json = JsonSerializer.Serialize(users);
+            File.WriteAllText(_fileJson, json, Encoding.Unicode);
         }
 
         private async Task<string> GeDataFromUrlAsync(string url)
@@ -50,7 +85,7 @@ namespace CodeChallenge.Infrastructure.Data
 
         private async Task<List<User>> GetDataFromJsonAsync()
         {
-            var result = (List<User>)_cache.Get("inputBackEndJsonUrl");
+            var result = (List<User>)_cache.Get(_inputBackEndKey);
             if (result == null)
             {
                 result = new List<User>();
@@ -59,19 +94,21 @@ namespace CodeChallenge.Infrastructure.Data
                 foreach (var item in usersResult.Results)
                 {
                     var currentItem = item;
-                    // Aplicar regras na criação de usuários
                     var user = _mapper.Map<User>(currentItem);
                     result.Add(user);
                 }
                 if (result.Count > 0)
-                    _cache.Set("inputBackEndJsonUrl", result);
+                {
+                    SaveDataToFileAsync(result);
+                    _cache.Set(_inputBackEndKey, result);
+                }
             }
             return result;
         }
 
         private async Task<List<User>> GetDataFromCsvAsync()
         {
-            var result = (List<User>)_cache.Get("inputBackEndCsvUrl");
+            var result = (List<User>)_cache.Get(_inputBackEndKey);
             if (result == null)
             {
                 result = new List<User>();
@@ -83,14 +120,16 @@ namespace CodeChallenge.Infrastructure.Data
                     if (!string.IsNullOrWhiteSpace(item) && count > 0)
                     {
                         var currentItem = ConvertCsvToUserAsync(item);
-                        // Aplicar regras na criação de usuários
                         var user = _mapper.Map<User>(currentItem);
                         result.Add(user);
                     }
                     count += 1;
                 }
                 if (result.Count > 0)
-                    _cache.Set("inputBackEndCsvUrl", result);
+                {
+                    SaveDataToFileAsync(result);
+                    _cache.Set(_inputBackEndKey, result);
+                }
             }
             return result;
         }

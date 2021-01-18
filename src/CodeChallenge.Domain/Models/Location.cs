@@ -4,6 +4,9 @@ namespace CodeChallenge.Domain.Models
 {
     public class Location
     {
+        [JsonPropertyName("region")]
+        public string Region { get; set; }
+
         [JsonPropertyName("street")]
         public string Street { get; set; }
 

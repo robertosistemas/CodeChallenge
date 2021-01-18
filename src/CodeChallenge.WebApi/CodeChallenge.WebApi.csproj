@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\App_Data\input-backend-sample.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
@@ -18,6 +22,12 @@
     <ProjectReference Include="..\CodeChallenge.Application\CodeChallenge.Application.csproj" />
     <ProjectReference Include="..\CodeChallenge.Domain\CodeChallenge.Domain.csproj" />
     <ProjectReference Include="..\CodeChallenge.Infrastructure\CodeChallenge.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\App_Data\output-backend-sample.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 
