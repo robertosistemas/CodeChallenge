@@ -17,6 +17,6 @@ As Ferramentas foram:
 
 ## Regras de negócio
 
-1. Implementei as regras de negócio de atualização do modelo utilizando o AutoMapper
+1. Implementei as regras de negócio de atualização do modelo utilizando o AutoMapper, regras essas que podem ser vistas no profile UserProfilee e no arquivo UserTypeResolver
 2. Separei as responsabilidades da aplicação em camadas seguindo o padrão Layered Achiteture
 3. Implementei os testes integrados que podem ser executados no ambiente de desenvolvimento e também em pipeline de CI/DI
