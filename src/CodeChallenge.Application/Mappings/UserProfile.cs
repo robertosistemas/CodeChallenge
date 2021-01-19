@@ -11,6 +11,7 @@ namespace CodeChallenge.Application.Mappings
         {
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+            CreateMap<User, User>();
 
             CreateMap<UserImport, User>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => System.Guid.NewGuid()))

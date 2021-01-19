@@ -1,4 +1,5 @@
-﻿using CodeChallenge.Domain.Abstractions;
+﻿using AutoMapper;
+using CodeChallenge.Domain.Abstractions;
 using CodeChallenge.Domain.Abstractions.Repositories;
 using CodeChallenge.Domain.Models;
 using System;
@@ -11,36 +12,41 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
     public class UserRepository : IUserRepository
     {
         protected readonly IDatabaseContext DatabaseContext;
+        protected readonly IMapper _mapper;
 
-        public UserRepository(IDatabaseContext databaseContext)
+        public UserRepository(IDatabaseContext databaseContext, IMapper mapper)
         {
             DatabaseContext = databaseContext;
+            _mapper = mapper;
         }
 
         public async Task<Guid> AddAsync(User item)
         {
             var users = await DatabaseContext.GetDataAsync();
             item.Id = Guid.NewGuid();
-            // Incluir registro na lista, salvar em disco, recarregar cache
+            users.Add(item);
+            await DatabaseContext.UpdateDataAsync(users);
             return item.Id;
         }
         public async Task UpdateAsync(Guid id, User item)
         {
             var users = await DatabaseContext.GetDataAsync();
             var user = users.FirstOrDefault(f => f.Id.Equals(id));
-            if (user == null)
+            if (user != null)
             {
-                // Atualizar registro na lista, salvar em disco, recarregar cache
+                user = item; ;
+                await DatabaseContext.UpdateDataAsync(users);
             }
         }
 
         public async Task DeleteAsync(Guid id)
         {
             var users = await DatabaseContext.GetDataAsync();
-            var user = users.FirstOrDefault(f => f.Id.Equals(id));
-            if (user == null)
+            var userMatched = users.Where(f => f.Id.Equals(id));
+            if (userMatched != null && userMatched.Count() > 0)
             {
-                // remover da lista, salvar em disco, recarregar cache
+                users = users.Except(userMatched).ToList();
+                await DatabaseContext.UpdateDataAsync(users);
             }
         }
 

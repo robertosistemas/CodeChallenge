@@ -6,9 +6,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -48,6 +46,13 @@ namespace CodeChallenge.Infrastructure.Data
             return await GetDataFromJsonAsync();
         }
 
+        public async Task UpdateDataAsync(List<User> users)
+        {
+            SaveDataToFileAsync(users);
+            _cache.Remove(_inputBackEndKey);
+            await Task.CompletedTask;
+        }
+
         private async Task<List<User>> GeDataFromFileAsync()
         {
             var result = (List<User>)_cache.Get(_inputBackEndKey);
@@ -70,7 +75,7 @@ namespace CodeChallenge.Infrastructure.Data
                 File.Delete(_fileJson);
             }
             var json = JsonSerializer.Serialize(users);
-            File.WriteAllText(_fileJson, json, Encoding.Unicode);
+            File.WriteAllText(_fileJson, json);
         }
 
         private async Task<string> GeDataFromUrlAsync(string url)
