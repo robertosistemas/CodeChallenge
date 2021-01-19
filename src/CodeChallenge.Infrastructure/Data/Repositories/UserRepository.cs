@@ -61,7 +61,7 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
             var users = await DatabaseContext.GetDataAsync();
 
             if (!string.IsNullOrWhiteSpace(userPaged.Region))
-                users = users.Where(f => f.Location.Region != null && f.Location.Region.Equals(userPaged.Region)).ToList();
+                users = users.Where(f => f?.Location?.Region != null && f.Location.Region.Equals(userPaged.Region)).ToList();
 
             if (!string.IsNullOrWhiteSpace(userPaged.Type))
                 users = users.Where(f => f.Type != null && f.Type.Equals(userPaged.Type)).ToList();

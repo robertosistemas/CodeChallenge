@@ -31,9 +31,10 @@ namespace CodeChallenge.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<Guid> Post([FromBody] UserDto userDto)
+        public async Task<string> Post([FromBody] UserDto userDto)
         {
-            return await _userServices.AddAsync(userDto);
+            var guid = await _userServices.AddAsync(userDto);
+            return guid.ToString();
         }
 
         [HttpPut("{id}")]
