@@ -11,10 +11,6 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
 {
     public class UserControllerTests : IntegrateTestBase
     {
-        public UserControllerTests()
-        {
-        }
-
         private async Task<string> AddAsync(UserDto userDto)
         {
             var url = "/User";
