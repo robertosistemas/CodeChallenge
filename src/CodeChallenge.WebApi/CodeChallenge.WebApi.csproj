@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\App_Data\input-backend-sample.csv" />
+    <None Include="wwwroot\App_Data\input-backend-example.csv" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\App_Data\output-backend-sample.json">
+    <Content Update="wwwroot\App_Data\output-backend-example.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

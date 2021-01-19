@@ -48,8 +48,7 @@ namespace CodeChallenge.Infrastructure.Data
 
         public async Task UpdateDataAsync(List<User> users)
         {
-            SaveDataToFileAsync(users);
-            _cache.Remove(_inputBackEndKey);
+            SaveDataToFile(users);
             await Task.CompletedTask;
         }
 
@@ -68,7 +67,7 @@ namespace CodeChallenge.Infrastructure.Data
             return await Task.FromResult(result);
         }
 
-        private void SaveDataToFileAsync(List<User> users)
+        private void SaveDataToFile(List<User> users)
         {
             if (File.Exists(_fileJson))
             {
@@ -76,6 +75,7 @@ namespace CodeChallenge.Infrastructure.Data
             }
             var json = JsonSerializer.Serialize(users);
             File.WriteAllText(_fileJson, json);
+            _cache.Remove(_inputBackEndKey);
         }
 
         private async Task<string> GeDataFromUrlAsync(string url)
@@ -104,7 +104,7 @@ namespace CodeChallenge.Infrastructure.Data
                 }
                 if (result.Count > 0)
                 {
-                    SaveDataToFileAsync(result);
+                    SaveDataToFile(result);
                     _cache.Set(_inputBackEndKey, result);
                 }
             }
@@ -132,7 +132,7 @@ namespace CodeChallenge.Infrastructure.Data
                 }
                 if (result.Count > 0)
                 {
-                    SaveDataToFileAsync(result);
+                    SaveDataToFile(result);
                     _cache.Set(_inputBackEndKey, result);
                 }
             }
