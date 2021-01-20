@@ -28,13 +28,14 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
             await DatabaseContext.UpdateDataAsync(users);
             return item.Id;
         }
+
         public async Task UpdateAsync(Guid id, User item)
         {
             var users = await DatabaseContext.GetDataAsync();
             var user = users.FirstOrDefault(f => f.Id.Equals(id));
             if (user != null)
             {
-                user = item; ;
+                users[users.IndexOf(user)] = item;
                 await DatabaseContext.UpdateDataAsync(users);
             }
         }

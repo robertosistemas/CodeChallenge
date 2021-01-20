@@ -6,8 +6,10 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeChallenge.Infrastructure.Data
@@ -21,6 +23,7 @@ namespace CodeChallenge.Infrastructure.Data
         private readonly string _inputBackEndCsvUrl;
         private readonly string _inputBackEndJsonUrl;
         private readonly string _fileJson;
+        private readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(10);
 
         public DatabaseContext(IConfiguration configuration, IMapper mapper, IMemoryCache cache)
         {
@@ -35,36 +38,36 @@ namespace CodeChallenge.Infrastructure.Data
 
         public async Task<List<User>> GetDataAsync()
         {
-            if (File.Exists(_fileJson))
+            await semaphoreSlim.WaitAsync();
+            try
             {
-                return await GeDataFromFileAsync();
+                if (File.Exists(_fileJson))
+                {
+                    return GeDataFromFile();
+                }
+                if (_inputBackEndType.Equals("csv"))
+                {
+                    return await GetDataFromCsvAsync();
+                }
+                return await GetDataFromJsonAsync();
             }
-            if (_inputBackEndType.Equals("csv"))
+            finally
             {
-                return await GetDataFromCsvAsync();
+                semaphoreSlim.Release();
             }
-            return await GetDataFromJsonAsync();
         }
 
         public async Task UpdateDataAsync(List<User> users)
         {
-            SaveDataToFile(users);
-            await Task.CompletedTask;
-        }
-
-        private async Task<List<User>> GeDataFromFileAsync()
-        {
-            var result = (List<User>)_cache.Get(_inputBackEndKey);
-            if (result == null)
+            await semaphoreSlim.WaitAsync();
+            try
             {
-                var json = File.ReadAllText(_fileJson);
-                result = JsonSerializer.Deserialize<List<User>>(json);
-                if (result.Count > 0)
-                {
-                    _cache.Set(_inputBackEndKey, result);
-                }
+                SaveDataToFile(users);
             }
-            return await Task.FromResult(result);
+            finally
+            {
+                semaphoreSlim.Release();
+            }
         }
 
         private void SaveDataToFile(List<User> users)
@@ -75,7 +78,35 @@ namespace CodeChallenge.Infrastructure.Data
             }
             var json = JsonSerializer.Serialize(users);
             File.WriteAllText(_fileJson, json);
-            _cache.Remove(_inputBackEndKey);
+            UpdateCache(null);
+        }
+
+        private List<User> GeDataFromFile()
+        {
+            var result = ReadCache();
+            if (result == null)
+            {
+                var json = File.ReadAllText(_fileJson);
+                result = JsonSerializer.Deserialize<List<User>>(json);
+                if (result.Count > 0)
+                {
+                    UpdateCache(result);
+                }
+            }
+            return result;
+        }
+
+        private void UpdateCache(List<User> users)
+        {
+            if (users == null || !users.Any())
+                _cache.Remove(_inputBackEndKey);
+            else
+                _cache.Set(_inputBackEndKey, users);
+        }
+
+        private List<User> ReadCache()
+        {
+            return (List<User>)_cache.Get(_inputBackEndKey);
         }
 
         private async Task<string> GeDataFromUrlAsync(string url)
@@ -90,7 +121,7 @@ namespace CodeChallenge.Infrastructure.Data
 
         private async Task<List<User>> GetDataFromJsonAsync()
         {
-            var result = (List<User>)_cache.Get(_inputBackEndKey);
+            var result = ReadCache();
             if (result == null)
             {
                 result = new List<User>();
@@ -105,7 +136,7 @@ namespace CodeChallenge.Infrastructure.Data
                 if (result.Count > 0)
                 {
                     SaveDataToFile(result);
-                    _cache.Set(_inputBackEndKey, result);
+                    UpdateCache(result);
                 }
             }
             return result;
@@ -113,7 +144,7 @@ namespace CodeChallenge.Infrastructure.Data
 
         private async Task<List<User>> GetDataFromCsvAsync()
         {
-            var result = (List<User>)_cache.Get(_inputBackEndKey);
+            var result = ReadCache();
             if (result == null)
             {
                 result = new List<User>();
@@ -133,7 +164,7 @@ namespace CodeChallenge.Infrastructure.Data
                 if (result.Count > 0)
                 {
                     SaveDataToFile(result);
-                    _cache.Set(_inputBackEndKey, result);
+                    UpdateCache(result);
                 }
             }
             return result;
