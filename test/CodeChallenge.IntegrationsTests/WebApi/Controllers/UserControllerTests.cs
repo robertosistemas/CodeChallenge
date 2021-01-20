@@ -150,9 +150,10 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             var response = await _client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
+            var usersResult = JsonSerializer.Deserialize<UsersResultDto>(responseString);
 
             // Assert
-            responseString.Should().NotBeNullOrEmpty();
+            usersResult.Users.Count.Should().BeGreaterThan(0);
         }
 
     }

@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\App_Data\input-backend-example.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\App_Data\input-backend-example.csv" />
+    <None Include="wwwroot\App_Data\input-backend-example.json" />
   </ItemGroup>
 
   <ItemGroup>

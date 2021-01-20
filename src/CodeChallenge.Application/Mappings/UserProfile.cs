@@ -41,7 +41,7 @@ namespace CodeChallenge.Application.Mappings
             return $"+55{OnlyNumbers(number)}";
         }
 
-        private static Dictionary<string, string> EstadosRegioes = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> EstadosRegioes = new Dictionary<string, string>()
             {
                 { "acre", "norte" },
                 { "alagoas", "nordeste" },
