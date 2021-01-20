@@ -25,9 +25,9 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             return responseString;
         }
 
-        private async Task UpdateAsync(string guid, UserDto userDto)
+        private async Task UpdateAsync(string userId, UserDto userDto)
         {
-            var url = $"/User/{guid}";
+            var url = $"/User/{userId}";
             var payload = JsonSerializer.Serialize(userDto);
             var content = new StringContent(payload, Encoding.UTF8)
             {
@@ -37,16 +37,16 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             response.EnsureSuccessStatusCode();
         }
 
-        private async Task DeleteAsync(string guid)
+        private async Task DeleteAsync(string userId)
         {
-            var url = $"/User/{guid}";
+            var url = $"/User/{userId}";
             var response = await _client.DeleteAsync(url);
             response.EnsureSuccessStatusCode();
         }
 
-        private async Task<UserDto> GetAsync(string guid)
+        private async Task<UserDto> GetAsync(string userId)
         {
-            var url = $"/User/{guid}";
+            var url = $"/User/{userId}";
             var response = await _client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
@@ -72,7 +72,6 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
                 }
             };
             var responseString = await AddAsync(user);
-            // Assert
             responseString.Should().NotBeNullOrEmpty();
         }
 
@@ -89,14 +88,13 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
                     Last = "Silva"
                 }
             };
-            var guid = await AddAsync(user);
+            var userId = await AddAsync(user);
 
-            var matchedUser = await GetAsync(guid);
+            var matchedUser = await GetAsync(userId);
             matchedUser.Name.Last = "Carlos";
-            await UpdateAsync(guid, matchedUser);
+            await UpdateAsync(userId, matchedUser);
 
-            // Assert
-            var updatedUser = await GetAsync(guid);
+            var updatedUser = await GetAsync(userId);
             updatedUser.Name.Last.Should().Equals("Carlos");
         }
 
@@ -113,10 +111,9 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
                     Last = "Silva"
                 }
             };
-            var guid = await AddAsync(user);
-            await DeleteAsync(guid);
-            var CheckedUser = await GetAsync(guid);
-            // Assert
+            var userId = await AddAsync(user);
+            await DeleteAsync(userId);
+            var CheckedUser = await GetAsync(userId);
             CheckedUser.Should().BeNull();
         }
 
@@ -133,28 +130,24 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
                     Last = "Silva"
                 }
             };
-            var guid = await AddAsync(user);
+            var userId = await AddAsync(user);
 
-            var userMatched = await GetAsync(guid);
-            // Assert
-            userMatched.Id.ToString().Should().Equals(guid);
+            var userMatched = await GetAsync(userId);
+
+            userMatched.Id.ToString().Should().Equals(userId);
         }
 
         [Fact]
         public async Task Test_GetAllAsync()
         {
-            // Arrange
             var url = "/User?Region=sul&Type=laborious&PageNumber=1&PageSize=10";
 
-            // Act
             var response = await _client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
             var usersResult = JsonSerializer.Deserialize<UsersResultDto>(responseString);
 
-            // Assert
             usersResult.Users.Count.Should().BeGreaterThan(0);
         }
-
     }
 }

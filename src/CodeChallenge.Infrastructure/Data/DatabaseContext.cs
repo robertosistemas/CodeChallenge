@@ -88,10 +88,9 @@ namespace CodeChallenge.Infrastructure.Data
             {
                 var json = File.ReadAllText(_fileJson);
                 result = JsonSerializer.Deserialize<List<User>>(json);
-                if (result.Count > 0)
-                {
-                    UpdateCache(result);
-                }
+                if (result == null)
+                    result = new List<User>();
+                UpdateCache(result);
             }
             return result;
         }
@@ -106,7 +105,7 @@ namespace CodeChallenge.Infrastructure.Data
 
         private List<User> ReadCache()
         {
-            return (List<User>)_cache.Get(_inputBackEndKey);
+            return _cache.Get(_inputBackEndKey) as List<User>;
         }
 
         private async Task<string> GeDataFromUrlAsync(string url)
@@ -133,11 +132,8 @@ namespace CodeChallenge.Infrastructure.Data
                     var user = _mapper.Map<User>(currentItem);
                     result.Add(user);
                 }
-                if (result.Count > 0)
-                {
-                    SaveDataToFile(result);
-                    UpdateCache(result);
-                }
+                SaveDataToFile(result);
+                UpdateCache(result);
             }
             return result;
         }
@@ -161,11 +157,8 @@ namespace CodeChallenge.Infrastructure.Data
                     }
                     count += 1;
                 }
-                if (result.Count > 0)
-                {
-                    SaveDataToFile(result);
-                    UpdateCache(result);
-                }
+                SaveDataToFile(result);
+                UpdateCache(result);
             }
             return result;
         }
