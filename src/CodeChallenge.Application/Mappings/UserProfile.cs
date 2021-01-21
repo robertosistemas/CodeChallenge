@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using CodeChallenge.Application.DataTransferObjects;
 using CodeChallenge.Domain.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CodeChallenge.Application.Mappings
 {
@@ -24,16 +26,10 @@ namespace CodeChallenge.Application.Mappings
                 .AfterMap((src, dest) => dest.Location.Region = UserProfile.EstadosRegioes[src.Location.State]);
         }
 
-        private string OnlyNumbers(string number)
+        private string OnlyNumbers(string text)
         {
-            var numbers = "0123456789";
-            var result = string.Empty;
-            foreach (string num in numbers.Split())
-            {
-                if (numbers.IndexOf(num) > -1)
-                    result += num;
-            }
-            return result;
+            var numbers = text ?? string.Empty;
+            return string.Join(string.Empty, numbers.ToCharArray().Where(f => char.IsNumber(f)));
         }
 
         private string TransformPhoneNumber(string number)
@@ -71,6 +67,5 @@ namespace CodeChallenge.Application.Mappings
                 { "sergipe", "nordeste" },
                 { "tocantins", "norte" }
             };
-
     }
 }

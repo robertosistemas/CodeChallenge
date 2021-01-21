@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CodeChallenge.Domain.Abstractions;
+﻿using CodeChallenge.Domain.Abstractions;
 using CodeChallenge.Domain.Abstractions.Repositories;
 using CodeChallenge.Domain.Models;
 using System;
@@ -12,12 +11,10 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
     public class UserRepository : IUserRepository
     {
         protected readonly IDatabaseContext DatabaseContext;
-        protected readonly IMapper _mapper;
 
-        public UserRepository(IDatabaseContext databaseContext, IMapper mapper)
+        public UserRepository(IDatabaseContext databaseContext)
         {
             DatabaseContext = databaseContext;
-            _mapper = mapper;
         }
 
         public async Task<Guid> AddAsync(User item)
@@ -71,8 +68,7 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
             if (skip >= users.Count)
                 skip = users.Count;
             var itensPaged = users.Skip(skip).Take(userPaged.PageSize).ToList();
-            var result = (itensPaged, users.Count);
-            return await Task.FromResult(result);
+            return (itensPaged, users.Count);
         }
     }
 }

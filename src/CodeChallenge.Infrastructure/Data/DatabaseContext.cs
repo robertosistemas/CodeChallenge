@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -76,8 +77,13 @@ namespace CodeChallenge.Infrastructure.Data
             {
                 File.Delete(_fileJson);
             }
-            var json = JsonSerializer.Serialize(users);
-            File.WriteAllText(_fileJson, json);
+            var options = new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+            var json = JsonSerializer.Serialize(users, typeof(List<User>), options);
+            File.WriteAllText(_fileJson, json, Encoding.GetEncoding(65001));
             UpdateCache(null);
         }
 
@@ -86,8 +92,12 @@ namespace CodeChallenge.Infrastructure.Data
             var result = ReadCache();
             if (result == null)
             {
-                var json = File.ReadAllText(_fileJson);
-                result = JsonSerializer.Deserialize<List<User>>(json);
+                var options = new JsonSerializerOptions()
+                {
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                };
+                var json = File.ReadAllText(_fileJson, Encoding.GetEncoding(65001));
+                result = JsonSerializer.Deserialize<List<User>>(json, options);
                 if (result == null)
                     result = new List<User>();
                 UpdateCache(result);
