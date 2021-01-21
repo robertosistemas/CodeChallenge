@@ -1,27 +1,12 @@
-﻿using CodeChallenge.WebApi;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-
-namespace CodeChallenge.IntegrationsTests.WebApi
+﻿namespace CodeChallenge.IntegrationsTests.WebApi
 {
-    public class IntegrateTestBase
+    public class IntegrateTestBase<TStartup> : ApiWebApplicationFactory<TStartup> where TStartup : class
     {
+        protected readonly ApiWebApplicationFactory<TStartup> Factory;
 
-        protected readonly TestServer _server;
-        protected readonly HttpClient _client;
-
-        public IntegrateTestBase()
+        public IntegrateTestBase(ApiWebApplicationFactory<TStartup> factory)
         {
-            _server = new TestServer(new WebHostBuilder()
-                .UseEnvironment("Test")
-                .UseConfiguration(new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build())
-                .UseStartup<Startup>());
-
-            _client = _server.CreateClient();
+            Factory = factory;
         }
     }
 }

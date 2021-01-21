@@ -5,6 +5,11 @@ namespace CodeChallenge.Application.DataTransferObjects
 {
     public class UsersResultDto
     {
+        public UsersResultDto()
+        {
+            Users = new List<UserDto>();
+        }
+
         [JsonPropertyName("pageNumber")]
         public int PageNumber { get; set; }
 
