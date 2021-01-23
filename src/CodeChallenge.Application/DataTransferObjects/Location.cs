@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CodeChallenge.Domain.Models
+namespace CodeChallenge.Application.DataTransferObjects
 {
     public class Location
     {

@@ -6,10 +6,10 @@ namespace CodeChallenge.Application.Services
 {
     public interface IUserServices
     {
-        Task<Guid> AddAsync(UserDto userDto);
-        Task UpdateAsync(Guid id, UserDto userDto);
+        Task<Guid> AddAsync(User user);
+        Task UpdateAsync(Guid id, User user);
         Task DeleteAsync(Guid id);
-        Task<UserDto> GetAsync(Guid id);
-        Task<UsersResultDto> GetAllAsync(UserPagedDto userPagedDto);
+        Task<User> GetAsync(Guid id);
+        Task<UsersResult> GetAllAsync(UserPaged userPaged);
     }
 }

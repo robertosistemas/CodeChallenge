@@ -8,8 +8,8 @@ namespace CodeChallenge.Application.Mappings
     {
         public LocationProfile()
         {
-            CreateMap<Location, LocationDto>();
-            CreateMap<LocationDto, Location>();
+            CreateMap<LocationModel, Location>();
+            CreateMap<Location, LocationModel>();
         }
     }
 }

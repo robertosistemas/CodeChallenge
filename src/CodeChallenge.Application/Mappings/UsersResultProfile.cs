@@ -8,8 +8,8 @@ namespace CodeChallenge.Application.Mappings
     {
         public UsersResultProfile()
         {
-            CreateMap<UsersResult, UsersResultDto>();
-            CreateMap<UsersResultDto, UsersResult>();
+            CreateMap<UsersResultModel, UsersResult>();
+            CreateMap<UsersResult, UsersResultModel>();
         }
     }
 }

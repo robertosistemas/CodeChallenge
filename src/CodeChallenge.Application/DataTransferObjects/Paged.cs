@@ -1,7 +1,7 @@
 ﻿using CodeChallenge.Domain.Abstractions;
 using System.Text.Json.Serialization;
 
-namespace CodeChallenge.Domain.Models
+namespace CodeChallenge.Application.DataTransferObjects
 {
     public class Paged : IPaged
     {
@@ -18,6 +18,5 @@ namespace CodeChallenge.Domain.Models
             if (PageSize <= 0)
                 PageSize = 10;
         }
-
     }
 }

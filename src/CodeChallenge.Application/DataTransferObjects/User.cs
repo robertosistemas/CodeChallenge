@@ -4,8 +4,14 @@ using System.Text.Json.Serialization;
 
 namespace CodeChallenge.Application.DataTransferObjects
 {
-    public class UserDto
+    public class User
     {
+        public User()
+        {
+            TelephoneNumbers = new List<string>();
+            MobileNumbers = new List<string>();
+        }
+
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
 
@@ -16,10 +22,10 @@ namespace CodeChallenge.Application.DataTransferObjects
         public string Gender { get; set; }
 
         [JsonPropertyName("name")]
-        public NameDto Name { get; set; }
+        public Name Name { get; set; }
 
         [JsonPropertyName("location")]
-        public LocationDto Location { get; set; }
+        public Location Location { get; set; }
 
         [JsonPropertyName("email")]
         public string Email { get; set; }
@@ -37,7 +43,7 @@ namespace CodeChallenge.Application.DataTransferObjects
         public List<string> MobileNumbers { get; set; }
 
         [JsonPropertyName("picture")]
-        public PictureDto Picture { get; set; }
+        public Picture Picture { get; set; }
 
         [JsonPropertyName("nationality")]
         public string Nationality { get; set; }

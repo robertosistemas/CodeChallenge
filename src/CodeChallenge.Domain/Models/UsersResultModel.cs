@@ -3,8 +3,13 @@ using System.Text.Json.Serialization;
 
 namespace CodeChallenge.Domain.Models
 {
-    public class UsersResult
+    public class UsersResultModel
     {
+        public UsersResultModel()
+        {
+            Users = new List<UserModel>();
+        }
+
         [JsonPropertyName("pageNumber")]
         public int PageNumber { get; set; }
 
@@ -15,6 +20,6 @@ namespace CodeChallenge.Domain.Models
         public int TotalCount { get; set; }
 
         [JsonPropertyName("users")]
-        public List<User> Users { get; set; }
+        public List<UserModel> Users { get; set; }
     }
 }

@@ -8,8 +8,8 @@ namespace CodeChallenge.Application.Mappings
     {
         public CoordinatesProfile()
         {
-            CreateMap<Coordinates, CoordinatesDto>();
-            CreateMap<CoordinatesDto, Coordinates>();
+            CreateMap<CoordinatesModel, Coordinates>();
+            CreateMap<Coordinates, CoordinatesModel>();
         }
     }
 }

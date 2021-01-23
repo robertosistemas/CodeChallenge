@@ -11,10 +11,10 @@ namespace CodeChallenge.Application.Mappings
     {
         public UserProfile()
         {
-            CreateMap<User, UserDto>();
-            CreateMap<UserDto, User>();
+            CreateMap<UserModel, User>();
+            CreateMap<User, UserModel>();
 
-            CreateMap<UserImport, User>()
+            CreateMap<UserImportModel, UserModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => System.Guid.NewGuid()))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(new UserTypeResolver()))
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.Equals("male") ? "m" : "f"))

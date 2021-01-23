@@ -18,27 +18,27 @@ namespace CodeChallenge.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<UsersResultDto> Get([FromQuery] UserPagedDto userPagedDto)
+        public async Task<UsersResult> Get([FromQuery] UserPaged userPagedDto)
         {
             userPagedDto.Normalize();
             return await _userServices.GetAllAsync(userPagedDto);
         }
 
         [HttpGet("{id}")]
-        public async Task<UserDto> Get(Guid id)
+        public async Task<User> Get(Guid id)
         {
             return await _userServices.GetAsync(id);
         }
 
         [HttpPost]
-        public async Task<string> Post([FromBody] UserDto userDto)
+        public async Task<string> Post([FromBody] User userDto)
         {
             var guid = await _userServices.AddAsync(userDto);
             return guid.ToString();
         }
 
         [HttpPut("{id}")]
-        public async Task Put(Guid id, [FromBody] UserDto userDto)
+        public async Task Put(Guid id, [FromBody] User userDto)
         {
             await _userServices.UpdateAsync(id, userDto);
         }

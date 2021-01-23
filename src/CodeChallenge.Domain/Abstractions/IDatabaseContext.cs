@@ -6,7 +6,7 @@ namespace CodeChallenge.Domain.Abstractions
 {
     public interface IDatabaseContext
     {
-        Task<List<User>> GetDataAsync();
-        Task UpdateDataAsync(List<User> users);
+        Task<List<UserModel>> GetDataAsync();
+        Task UpdateDataAsync(List<UserModel> users);
     }
 }

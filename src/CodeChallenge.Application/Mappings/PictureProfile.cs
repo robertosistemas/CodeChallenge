@@ -8,8 +8,8 @@ namespace CodeChallenge.Application.Mappings
     {
         public PictureProfile()
         {
-            CreateMap<Picture, PictureDto>();
-            CreateMap<PictureDto, Picture>();
+            CreateMap<PictureModel, Picture>();
+            CreateMap<Picture, PictureModel>();
         }
     }
 }

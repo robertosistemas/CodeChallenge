@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CodeChallenge.Application.DataTransferObjects
+namespace CodeChallenge.Domain.Models
 {
-    public class CoordinatesDto
+    public class CoordinatesModel
     {
         [JsonPropertyName("latitude")]
         public string Latitude { get; set; }

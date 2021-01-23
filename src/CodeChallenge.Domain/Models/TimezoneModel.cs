@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CodeChallenge.Application.DataTransferObjects
+namespace CodeChallenge.Domain.Models
 {
-    public class TimezoneDto
+    public class TimezoneModel
     {
         [JsonPropertyName("offset")]
         public string Offset { get; set; }

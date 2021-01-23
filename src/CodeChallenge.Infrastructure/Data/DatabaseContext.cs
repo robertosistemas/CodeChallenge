@@ -37,7 +37,7 @@ namespace CodeChallenge.Infrastructure.Data
             _cache = cache;
         }
 
-        public async Task<List<User>> GetDataAsync()
+        public async Task<List<UserModel>> GetDataAsync()
         {
             await semaphoreSlim.WaitAsync();
             try
@@ -58,7 +58,7 @@ namespace CodeChallenge.Infrastructure.Data
             }
         }
 
-        public async Task UpdateDataAsync(List<User> users)
+        public async Task UpdateDataAsync(List<UserModel> users)
         {
             await semaphoreSlim.WaitAsync();
             try
@@ -71,7 +71,7 @@ namespace CodeChallenge.Infrastructure.Data
             }
         }
 
-        private void SaveDataToFile(List<User> users)
+        private void SaveDataToFile(List<UserModel> users)
         {
             if (File.Exists(_fileJson))
             {
@@ -82,12 +82,12 @@ namespace CodeChallenge.Infrastructure.Data
                 WriteIndented = true,
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
-            var json = JsonSerializer.Serialize(users, typeof(List<User>), options);
+            var json = JsonSerializer.Serialize(users, typeof(List<UserModel>), options);
             File.WriteAllText(_fileJson, json, Encoding.GetEncoding(65001));
             UpdateCache(null);
         }
 
-        private List<User> GeDataFromFile()
+        private List<UserModel> GeDataFromFile()
         {
             var result = ReadCache();
             if (result == null)
@@ -97,15 +97,15 @@ namespace CodeChallenge.Infrastructure.Data
                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                 };
                 var json = File.ReadAllText(_fileJson, Encoding.GetEncoding(65001));
-                result = JsonSerializer.Deserialize<List<User>>(json, options);
+                result = JsonSerializer.Deserialize<List<UserModel>>(json, options);
                 if (result == null)
-                    result = new List<User>();
+                    result = new List<UserModel>();
                 UpdateCache(result);
             }
             return result;
         }
 
-        private void UpdateCache(List<User> users)
+        private void UpdateCache(List<UserModel> users)
         {
             if (users == null || !users.Any())
                 _cache.Remove(_inputBackEndKey);
@@ -113,9 +113,9 @@ namespace CodeChallenge.Infrastructure.Data
                 _cache.Set(_inputBackEndKey, users);
         }
 
-        private List<User> ReadCache()
+        private List<UserModel> ReadCache()
         {
-            return _cache.Get(_inputBackEndKey) as List<User>;
+            return _cache.Get(_inputBackEndKey) as List<UserModel>;
         }
 
         private async Task<string> GeDataFromUrlAsync(string url)
@@ -128,18 +128,18 @@ namespace CodeChallenge.Infrastructure.Data
             return await Task.FromResult(result);
         }
 
-        private async Task<List<User>> GetDataFromJsonAsync()
+        private async Task<List<UserModel>> GetDataFromJsonAsync()
         {
             var result = ReadCache();
             if (result == null)
             {
-                result = new List<User>();
+                result = new List<UserModel>();
                 var json = await GeDataFromUrlAsync(_inputBackEndJsonUrl);
-                var usersResult = JsonSerializer.Deserialize<UsersImportResult>(json);
+                var usersResult = JsonSerializer.Deserialize<UsersImportResultModel>(json);
                 foreach (var item in usersResult.Results)
                 {
                     var currentItem = item;
-                    var user = _mapper.Map<User>(currentItem);
+                    var user = _mapper.Map<UserModel>(currentItem);
                     result.Add(user);
                 }
                 SaveDataToFile(result);
@@ -148,12 +148,12 @@ namespace CodeChallenge.Infrastructure.Data
             return result;
         }
 
-        private async Task<List<User>> GetDataFromCsvAsync()
+        private async Task<List<UserModel>> GetDataFromCsvAsync()
         {
             var result = ReadCache();
             if (result == null)
             {
-                result = new List<User>();
+                result = new List<UserModel>();
                 var csv = await GeDataFromUrlAsync(_inputBackEndCsvUrl);
                 var itens = csv.Split(Environment.NewLine);
                 var count = 0;
@@ -162,7 +162,7 @@ namespace CodeChallenge.Infrastructure.Data
                     if (!string.IsNullOrWhiteSpace(item) && count > 0)
                     {
                         var currentItem = ConvertCsvToUserAsync(item);
-                        var user = _mapper.Map<User>(currentItem);
+                        var user = _mapper.Map<UserModel>(currentItem);
                         result.Add(user);
                     }
                     count += 1;
@@ -196,7 +196,7 @@ namespace CodeChallenge.Infrastructure.Data
         private const int PICTURE_MEDIUM = 20;
         private const int PICTURE_THUMBNAIL = 21;
 
-        private UserImport ConvertCsvToUserAsync(string currentItem)
+        private UserImportModel ConvertCsvToUserAsync(string currentItem)
         {
             if (currentItem.StartsWith("\""))
                 currentItem = currentItem[1..];
@@ -206,46 +206,46 @@ namespace CodeChallenge.Infrastructure.Data
 
             var record = currentItem.Split("\",\"");
 
-            return new UserImport
+            return new UserImportModel
             {
                 Gender = record[GENDER],
-                Name = new Name
+                Name = new NameModel
                 {
                     Title = record[NAME_TITLE],
                     First = record[NAME_FIRST],
                     Last = record[NAME_LAST]
                 },
-                Location = new Location
+                Location = new LocationModel
                 {
                     Street = record[LOCATION_STREET],
                     City = record[LOCATION_CITY],
                     State = record[LOCATION_STATE],
                     Postcode = Convert.ToInt32(record[LOCATION_POSTCODE]),
-                    Coordinates = new Coordinates
+                    Coordinates = new CoordinatesModel
                     {
                         Latitude = record[LOCATION_COORDINATES_LATITUDE],
                         Longitude = record[LOCATION_COORDINATES_LONGITUDE]
                     },
-                    Timezone = new Timezone
+                    Timezone = new TimezoneModel
                     {
                         Offset = record[LOCATION_TIMEZONE_OFFSET],
                         Description = record[LOCATION_TIMEZONE_DESCRIPTION]
                     }
                 },
                 Email = record[EMAIL],
-                Dob = new Dob
+                Dob = new DobModel
                 {
                     Date = Convert.ToDateTime(record[DOB_DATE]),
                     Age = Convert.ToInt32(record[DOB_AGE])
                 },
-                Registered = new Registered
+                Registered = new RegisteredModel
                 {
                     Date = Convert.ToDateTime(record[REGISTERED_DATE]),
                     Age = Convert.ToInt32(record[REGISTERED_AGE])
                 },
                 Phone = record[PHONE],
                 Cell = record[CELL],
-                Picture = new Picture
+                Picture = new PictureModel
                 {
                     Large = record[PICTURE_LARGE],
                     Medium = record[PICTURE_MEDIUM],

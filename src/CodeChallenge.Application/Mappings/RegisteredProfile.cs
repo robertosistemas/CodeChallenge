@@ -8,8 +8,8 @@ namespace CodeChallenge.Application.Mappings
     {
         public RegisteredProfile()
         {
-            CreateMap<Registered, RegisteredDto>();
-            CreateMap<RegisteredDto, Registered>();
+            CreateMap<RegisteredModel, Registered>();
+            CreateMap<Registered, RegisteredModel>();
         }
     }
 }

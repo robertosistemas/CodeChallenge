@@ -4,11 +4,13 @@ using System.Text.Json.Serialization;
 
 namespace CodeChallenge.Domain.Models
 {
-    public class User
+    public class UserModel
     {
-        public User()
+        public UserModel()
         {
             this.Id = Guid.NewGuid();
+            TelephoneNumbers = new List<string>();
+            MobileNumbers = new List<string>();
         }
 
         [JsonPropertyName("id")]
@@ -21,10 +23,10 @@ namespace CodeChallenge.Domain.Models
         public string Gender { get; set; }
 
         [JsonPropertyName("name")]
-        public Name Name { get; set; }
+        public NameModel Name { get; set; }
 
         [JsonPropertyName("location")]
-        public Location Location { get; set; }
+        public LocationModel Location { get; set; }
 
         [JsonPropertyName("email")]
         public string Email { get; set; }
@@ -42,7 +44,7 @@ namespace CodeChallenge.Domain.Models
         public List<string> MobileNumbers { get; set; }
 
         [JsonPropertyName("picture")]
-        public Picture Picture { get; set; }
+        public PictureModel Picture { get; set; }
 
         [JsonPropertyName("nationality")]
         public string Nationality { get; set; }

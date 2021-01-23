@@ -8,8 +8,8 @@ namespace CodeChallenge.Application.Mappings
     {
         public TimezoneProfile()
         {
-            CreateMap<Timezone, TimezoneDto>();
-            CreateMap<TimezoneDto, Timezone>();
+            CreateMap<TimezoneModel, Timezone>();
+            CreateMap<Timezone, TimezoneModel>();
         }
     }
 }

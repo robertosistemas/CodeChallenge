@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CodeChallenge.Application.DataTransferObjects
+namespace CodeChallenge.Domain.Models
 {
-    public class LocationDto
+    public class LocationModel
     {
         [JsonPropertyName("region")]
         public string Region { get; set; }
@@ -20,9 +20,9 @@ namespace CodeChallenge.Application.DataTransferObjects
         public int Postcode { get; set; }
 
         [JsonPropertyName("coordinates")]
-        public CoordinatesDto Coordinates { get; set; }
+        public CoordinatesModel Coordinates { get; set; }
 
         [JsonPropertyName("timezone")]
-        public TimezoneDto Timezone { get; set; }
+        public TimezoneModel Timezone { get; set; }
     }
 }

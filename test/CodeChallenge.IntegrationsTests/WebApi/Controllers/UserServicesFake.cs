@@ -8,7 +8,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
 {
     public class UserServicesFake : IUserServices
     {
-        public async Task<Guid> AddAsync(UserDto userDto)
+        public async Task<Guid> AddAsync(User user)
         {
             return await Task.FromResult(Guid.NewGuid());
         }
@@ -18,18 +18,18 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             await Task.CompletedTask;
         }
 
-        public async Task<UsersResultDto> GetAllAsync(UserPagedDto userPagedDto)
+        public async Task<UsersResult> GetAllAsync(UserPaged userPaged)
         {
-            var usersResult = new UsersResultDto() { Users = new List<UserDto>() { new UserDto() } };
+            var usersResult = new UsersResult() { Users = new List<User>() { new User() } };
             return await Task.FromResult(usersResult);
         }
 
-        public async Task<UserDto> GetAsync(Guid id)
+        public async Task<User> GetAsync(Guid id)
         {
-            return await Task.FromResult(new UserDto());
+            return await Task.FromResult(new User());
         }
 
-        public async Task UpdateAsync(Guid id, UserDto userDto)
+        public async Task UpdateAsync(Guid id, User user)
         {
             await Task.CompletedTask;
         }

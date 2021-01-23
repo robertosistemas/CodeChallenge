@@ -1,9 +1,9 @@
 ﻿using CodeChallenge.Domain.Abstractions;
 using System.Text.Json.Serialization;
 
-namespace CodeChallenge.Application.DataTransferObjects
+namespace CodeChallenge.Domain.Models
 {
-    public class PagedDto : IPaged
+    public class PagedModel : IPaged
     {
         [JsonPropertyName("pageNumber")]
         public int PageNumber { get; set; }
@@ -18,5 +18,6 @@ namespace CodeChallenge.Application.DataTransferObjects
             if (PageSize <= 0)
                 PageSize = 10;
         }
+
     }
 }

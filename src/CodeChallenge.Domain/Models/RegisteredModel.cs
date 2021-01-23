@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace CodeChallenge.Domain.Models
 {
-    public class Registered
+    public class RegisteredModel
     {
         [JsonPropertyName("date")]
         public DateTime Date { get; set; }

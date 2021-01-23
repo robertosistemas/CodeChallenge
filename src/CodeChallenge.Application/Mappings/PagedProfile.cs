@@ -8,8 +8,8 @@ namespace CodeChallenge.Application.Mappings
     {
         public PagedProfile()
         {
-            CreateMap<Paged, PagedDto>();
-            CreateMap<PagedDto, Paged>();
+            CreateMap<PagedModel, Paged>();
+            CreateMap<Paged, PagedModel>();
         }
     }
 }

@@ -16,50 +16,50 @@ namespace CodeChallenge.IntegrationsTests
         }
 
         [Fact]
-        public void Test_Mapper()
+        public void User_Mapper_Test()
         {
             // Arrange
 
-            var userImport = new UserImport
+            var userImport = new UserImportModel
             {
                 Gender = "male",
-                Name = new Name
+                Name = new NameModel
                 {
                     Title = "Mr",
                     First = "Roberto",
                     Last = "Silva"
                 },
-                Location = new Location
+                Location = new LocationModel
                 {
                     Street = "Rua Teste",
                     City = "Floripa",
                     State = "santa catarina",
                     Postcode = 12345789,
-                    Coordinates = new Coordinates
+                    Coordinates = new CoordinatesModel
                     {
                         Latitude = "-76.3253",
                         Longitude = "137.9437"
                     },
-                    Timezone = new Timezone
+                    Timezone = new TimezoneModel
                     {
                         Offset = "-1:00",
                         Description = "Azores, Cape Verde Islands"
                     }
                 },
                 Email = "ione.dacosta@example.com",
-                Dob = new Dob
+                Dob = new DobModel
                 {
                     Date = Convert.ToDateTime("1968-01-24T18:03:23Z"),
                     Age = 50
                 },
-                Registered = new Registered
+                Registered = new RegisteredModel
                 {
                     Date = Convert.ToDateTime("2004-01-23T23:54:33Z"),
                     Age = 14
                 },
                 Phone = "(01) 5415-5648",
                 Cell = "(10) 8264-5550",
-                Picture = new Picture
+                Picture = new PictureModel
                 {
                     Large = "https://randomuser.me/api/portraits/women/46.jpg",
                     Medium = "https://randomuser.me/api/portraits/med/women/46.jpg",
@@ -70,7 +70,7 @@ namespace CodeChallenge.IntegrationsTests
             //Act
 
             var mapper = Factory.Services.GetService<IMapper>();
-            var user = mapper.Map<User>(userImport);
+            var user = mapper.Map<UserModel>(userImport);
 
             // Assert
 

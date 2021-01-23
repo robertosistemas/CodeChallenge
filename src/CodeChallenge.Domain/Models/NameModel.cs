@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CodeChallenge.Application.DataTransferObjects
+namespace CodeChallenge.Domain.Models
 {
-    public class NameDto
+    public class NameModel
     {
         [JsonPropertyName("title")]
         public string Title { get; set; }

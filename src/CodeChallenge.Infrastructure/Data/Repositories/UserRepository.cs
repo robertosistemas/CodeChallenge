@@ -17,22 +17,22 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
             DatabaseContext = databaseContext;
         }
 
-        public async Task<Guid> AddAsync(User item)
+        public async Task<Guid> AddAsync(UserModel user)
         {
             var users = await DatabaseContext.GetDataAsync();
-            item.Id = Guid.NewGuid();
-            users.Add(item);
+            user.Id = Guid.NewGuid();
+            users.Add(user);
             await DatabaseContext.UpdateDataAsync(users);
-            return item.Id;
+            return user.Id;
         }
 
-        public async Task UpdateAsync(Guid id, User item)
+        public async Task UpdateAsync(Guid id, UserModel user)
         {
             var users = await DatabaseContext.GetDataAsync();
-            var user = users.FirstOrDefault(f => f.Id.Equals(id));
-            if (user != null)
+            var userMached = users.FirstOrDefault(f => f.Id.Equals(id));
+            if (userMached != null)
             {
-                users[users.IndexOf(user)] = item;
+                users[users.IndexOf(userMached)] = user;
                 await DatabaseContext.UpdateDataAsync(users);
             }
         }
@@ -48,13 +48,13 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
             }
         }
 
-        public async Task<User> GetAsync(Guid id)
+        public async Task<UserModel> GetAsync(Guid id)
         {
             var users = await DatabaseContext.GetDataAsync();
             return users.FirstOrDefault(f => f.Id.Equals(id));
         }
 
-        public async Task<(List<User> Itens, int TotalCount)> GetAllAsync(UserPaged userPaged)
+        public async Task<(List<UserModel> Itens, int TotalCount)> GetAllAsync(UserPagedModel userPaged)
         {
             var users = await DatabaseContext.GetDataAsync();
 

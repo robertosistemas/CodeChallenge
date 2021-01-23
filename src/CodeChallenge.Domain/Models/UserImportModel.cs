@@ -2,25 +2,25 @@
 
 namespace CodeChallenge.Domain.Models
 {
-    public class UserImport
+    public class UserImportModel
     {
         [JsonPropertyName("gender")]
         public string Gender { get; set; }
 
         [JsonPropertyName("name")]
-        public Name Name { get; set; }
+        public NameModel Name { get; set; }
 
         [JsonPropertyName("location")]
-        public Location Location { get; set; }
+        public LocationModel Location { get; set; }
 
         [JsonPropertyName("email")]
         public string Email { get; set; }
 
         [JsonPropertyName("dob")]
-        public Dob Dob { get; set; }
+        public DobModel Dob { get; set; }
 
         [JsonPropertyName("registered")]
-        public Registered Registered { get; set; }
+        public RegisteredModel Registered { get; set; }
 
         [JsonPropertyName("phone")]
         public string Phone { get; set; }
@@ -29,6 +29,6 @@ namespace CodeChallenge.Domain.Models
         public string Cell { get; set; }
 
         [JsonPropertyName("picture")]
-        public Picture Picture { get; set; }
+        public PictureModel Picture { get; set; }
     }
 }

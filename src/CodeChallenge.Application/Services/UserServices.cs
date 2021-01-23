@@ -19,16 +19,16 @@ namespace CodeChallenge.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<Guid> AddAsync(UserDto userDto)
+        public async Task<Guid> AddAsync(User user)
         {
-            var user = _mapper.Map<User>(userDto);
-            return await _userRepository.AddAsync(user);
+            var userModel = _mapper.Map<UserModel>(user);
+            return await _userRepository.AddAsync(userModel);
         }
 
-        public async Task UpdateAsync(Guid id, UserDto userDto)
+        public async Task UpdateAsync(Guid id, User user)
         {
-            var user = _mapper.Map<User>(userDto);
-            await _userRepository.UpdateAsync(id, user);
+            var userModel = _mapper.Map<UserModel>(user);
+            await _userRepository.UpdateAsync(id, userModel);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -36,21 +36,21 @@ namespace CodeChallenge.Application.Services
             await _userRepository.DeleteAsync(id);
         }
 
-        public async Task<UserDto> GetAsync(Guid id)
+        public async Task<User> GetAsync(Guid id)
         {
-            var user = await _userRepository.GetAsync(id);
-            return _mapper.Map<UserDto>(user);
+            var userModel = await _userRepository.GetAsync(id);
+            return _mapper.Map<User>(userModel);
         }
 
-        public async Task<UsersResultDto> GetAllAsync(UserPagedDto userPagedDto)
+        public async Task<UsersResult> GetAllAsync(UserPaged userPaged)
         {
-            var userPaged = _mapper.Map<UserPaged>(userPagedDto);
-            var (Itens, TotalCount) = await _userRepository.GetAllAsync(userPaged);
-            return new UsersResultDto
+            var userPagedModel = _mapper.Map<UserPagedModel>(userPaged);
+            var (Itens, TotalCount) = await _userRepository.GetAllAsync(userPagedModel);
+            return new UsersResult
             {
-                Users = _mapper.Map<List<UserDto>>(Itens),
-                PageNumber = userPagedDto.PageNumber,
-                PageSize = userPagedDto.PageSize,
+                Users = _mapper.Map<List<User>>(Itens),
+                PageNumber = userPaged.PageNumber,
+                PageSize = userPaged.PageSize,
                 TotalCount = TotalCount
             };
         }

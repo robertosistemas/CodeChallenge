@@ -1,10 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace CodeChallenge.Domain.Models
+namespace CodeChallenge.Application.DataTransferObjects
 {
-    public class UsersImportResult
+    public class UsersResult
     {
+        public UsersResult()
+        {
+            Users = new List<User>();
+        }
+
         [JsonPropertyName("pageNumber")]
         public int PageNumber { get; set; }
 
@@ -14,7 +19,7 @@ namespace CodeChallenge.Domain.Models
         [JsonPropertyName("totalCount")]
         public int TotalCount { get; set; }
 
-        [JsonPropertyName("results")]
-        public List<UserImport> Results { get; set; }
+        [JsonPropertyName("users")]
+        public List<User> Users { get; set; }
     }
 }

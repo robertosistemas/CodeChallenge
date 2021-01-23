@@ -20,10 +20,10 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         {
         }
 
-        private async Task<string> AddAsync(UserDto userDto)
+        private async Task<string> AddAsync(User user)
         {
             var url = "/User";
-            var payload = JsonSerializer.Serialize(userDto);
+            var payload = JsonSerializer.Serialize(user);
             var content = new StringContent(payload, Encoding.UTF8)
             {
                 Headers = { ContentType = new MediaTypeHeaderValue("application/json") }
@@ -35,10 +35,10 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             return responseString;
         }
 
-        private async Task UpdateAsync(string userId, UserDto userDto)
+        private async Task UpdateAsync(string userId, User user)
         {
             var url = $"/User/{userId}";
-            var payload = JsonSerializer.Serialize(userDto);
+            var payload = JsonSerializer.Serialize(user);
             var content = new StringContent(payload, Encoding.UTF8)
             {
                 Headers = { ContentType = new MediaTypeHeaderValue("application/json") }
@@ -56,28 +56,28 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             response.EnsureSuccessStatusCode();
         }
 
-        private async Task<UserDto> GetAsync(string userId)
+        private async Task<User> GetAsync(string userId)
         {
             var url = $"/User/{userId}";
             var _client = Factory.CreateClient();
             var response = await _client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            UserDto user = null;
+            User user = null;
             if (!string.IsNullOrWhiteSpace(responseString))
             {
-                user = JsonSerializer.Deserialize<UserDto>(responseString);
+                user = JsonSerializer.Deserialize<User>(responseString);
             }
             return user;
         }
 
         [Fact]
-        public async Task Test_AddAsync()
+        public async Task Add_Test_Async()
         {
-            var user = new UserDto
+            var user = new User
             {
                 Gender = "m",
-                Name = new NameDto
+                Name = new Name
                 {
                     Title = "Mr",
                     First = "Roberto",
@@ -89,12 +89,12 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         }
 
         [Fact]
-        public async Task Test_UpdateAsync()
+        public async Task Update_Test_Async()
         {
-            var user = new UserDto
+            var user = new User
             {
                 Gender = "m",
-                Name = new NameDto
+                Name = new Name
                 {
                     Title = "Mr",
                     First = "Roberto",
@@ -112,12 +112,12 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         }
 
         [Fact]
-        public async Task Test_DeleteAsync()
+        public async Task Delete_Test_Async()
         {
-            var user = new UserDto
+            var user = new User
             {
                 Gender = "m",
-                Name = new NameDto
+                Name = new Name
                 {
                     Title = "Mr",
                     First = "Roberto",
@@ -131,12 +131,12 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         }
 
         [Fact]
-        public async Task Test_GetAsync()
+        public async Task Get_Test_Async()
         {
-            var user = new UserDto
+            var user = new User
             {
                 Gender = "m",
-                Name = new NameDto
+                Name = new Name
                 {
                     Title = "Mr",
                     First = "Roberto",
@@ -151,11 +151,11 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         }
 
         [Fact]
-        public async Task Test_GetAllAsync()
+        public async Task Get_All_Test_Async()
         {
             var url = "/User?Region=sul&Type=laborious&PageNumber=1&PageSize=10";
 
-            //// Mockando um serviço no método
+            //// Exemplo de como mockar um serviço no método
             //var _client = Factory.WithWebHostBuilder(builder =>
             //{
             //    builder.ConfigureTestServices(services =>
@@ -168,7 +168,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             var response = await _client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            var usersResult = JsonSerializer.Deserialize<UsersResultDto>(responseString);
+            var usersResult = JsonSerializer.Deserialize<UsersResult>(responseString);
 
             usersResult.Users.Count.Should().BeGreaterThan(0);
         }

@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace CodeChallenge.Application.Mappings
 {
-    public class UserTypeResolver : IValueResolver<UserImport, User, string>
+    public class UserTypeResolver : IValueResolver<UserImportModel, UserModel, string>
     {
         private const string TYPE_USER_SPECIAL = "special";
 
@@ -28,7 +28,7 @@ namespace CodeChallenge.Application.Mappings
 
         private const string TYPE_USER_LABORIOUS = "laborious";
 
-        public string Resolve(UserImport source, User destination, string member, ResolutionContext context)
+        public string Resolve(UserImportModel source, UserModel destination, string member, ResolutionContext context)
         {
             var culture = new CultureInfo("en-US");
             double longitude = Convert.ToDouble(source.Location.Coordinates.Longitude, culture);

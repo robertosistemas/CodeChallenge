@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CodeChallenge.Application.DataTransferObjects
+namespace CodeChallenge.Domain.Models
 {
-    public class UserPagedDto : PagedDto
+    public class UserPagedModel : PagedModel
     {
         [JsonPropertyName("region")]
         public string Region { get; set; }
