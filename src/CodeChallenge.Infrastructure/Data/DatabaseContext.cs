@@ -23,7 +23,8 @@ namespace CodeChallenge.Infrastructure.Data
         private readonly string _inputBackEndType;
         private readonly string _inputBackEndCsvUrl;
         private readonly string _inputBackEndJsonUrl;
-        private readonly string _fileJson;
+        private readonly string _outputFileName;
+        private readonly string _fullOutputFileName;
         private readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(10);
 
         public DatabaseContext(IConfiguration configuration, IMapper mapper, IMemoryCache cache)
@@ -33,7 +34,8 @@ namespace CodeChallenge.Infrastructure.Data
             _inputBackEndType = configuration["InputBackEnd:Type"];
             _inputBackEndCsvUrl = configuration["InputBackEnd:CsvUrl"];
             _inputBackEndJsonUrl = configuration["InputBackEnd:JsonUrl"];
-            _fileJson = $"{AppDomain.CurrentDomain.GetData("DataDirectory")}\\output-backend.json";
+            _outputFileName = configuration["outputFileName"];
+            _fullOutputFileName = $"{AppDomain.CurrentDomain.GetData("DataDirectory")}\\{_outputFileName}";
             _cache = cache;
         }
 
@@ -42,7 +44,7 @@ namespace CodeChallenge.Infrastructure.Data
             await semaphoreSlim.WaitAsync();
             try
             {
-                if (File.Exists(_fileJson))
+                if (File.Exists(_fullOutputFileName))
                 {
                     return GeDataFromFile();
                 }
@@ -73,9 +75,9 @@ namespace CodeChallenge.Infrastructure.Data
 
         private void SaveDataToFile(List<UserModel> users)
         {
-            if (File.Exists(_fileJson))
+            if (File.Exists(_fullOutputFileName))
             {
-                File.Delete(_fileJson);
+                File.Delete(_fullOutputFileName);
             }
             var options = new JsonSerializerOptions()
             {
@@ -83,7 +85,7 @@ namespace CodeChallenge.Infrastructure.Data
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
             var json = JsonSerializer.Serialize(users, typeof(List<UserModel>), options);
-            File.WriteAllText(_fileJson, json, Encoding.GetEncoding(65001));
+            File.WriteAllText(_fullOutputFileName, json, Encoding.GetEncoding(65001));
             UpdateCache(null);
         }
 
@@ -96,10 +98,8 @@ namespace CodeChallenge.Infrastructure.Data
                 {
                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                 };
-                var json = File.ReadAllText(_fileJson, Encoding.GetEncoding(65001));
+                var json = File.ReadAllText(_fullOutputFileName, Encoding.GetEncoding(65001));
                 result = JsonSerializer.Deserialize<List<UserModel>>(json, options);
-                if (result == null)
-                    result = new List<UserModel>();
                 UpdateCache(result);
             }
             return result;
@@ -236,12 +236,12 @@ namespace CodeChallenge.Infrastructure.Data
                 Dob = new DobModel
                 {
                     Date = Convert.ToDateTime(record[DOB_DATE]),
-                    Age = Convert.ToInt32(record[DOB_AGE])
+                    //Age = Convert.ToInt32(record[DOB_AGE])
                 },
                 Registered = new RegisteredModel
                 {
                     Date = Convert.ToDateTime(record[REGISTERED_DATE]),
-                    Age = Convert.ToInt32(record[REGISTERED_AGE])
+                    //Age = Convert.ToInt32(record[REGISTERED_AGE])
                 },
                 Phone = record[PHONE],
                 Cell = record[CELL],

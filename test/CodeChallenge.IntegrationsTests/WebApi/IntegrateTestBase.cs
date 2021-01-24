@@ -1,8 +1,8 @@
 ﻿namespace CodeChallenge.IntegrationsTests.WebApi
 {
-    public class IntegrateTestBase<TStartup> : ApiWebApplicationFactory<TStartup> where TStartup : class
+    public abstract class IntegrateTestBase<TStartup> where TStartup : class
     {
-        protected readonly ApiWebApplicationFactory<TStartup> Factory;
+        protected ApiWebApplicationFactory<TStartup> Factory;
 
         public IntegrateTestBase(ApiWebApplicationFactory<TStartup> factory)
         {

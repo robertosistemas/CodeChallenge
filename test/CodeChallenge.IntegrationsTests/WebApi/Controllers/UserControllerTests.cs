@@ -1,9 +1,5 @@
 ﻿using CodeChallenge.Application.DataTransferObjects;
-using CodeChallenge.Application.Services;
-using CodeChallenge.WebApi;
 using FluentAssertions;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -13,11 +9,11 @@ using Xunit;
 
 namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
 {
-    public class UserControllerTests : IntegrateTestBase<Startup>, IClassFixture<UserControllerTestsFixture<Startup>>
+    public abstract class UserControllerTests<TStartup> : IntegrateTestBase<TStartup> where TStartup : class
     {
-
-        public UserControllerTests(UserControllerTestsFixture<Startup> factory) : base(factory)
+        public UserControllerTests(ApiWebApplicationFactory<TStartup> factory) : base(factory)
         {
+
         }
 
         private async Task<string> AddAsync(User user)
@@ -28,8 +24,8 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             {
                 Headers = { ContentType = new MediaTypeHeaderValue("application/json") }
             };
-            var _client = Factory.CreateClient();
-            var response = await _client.PostAsync(url, content);
+            var client = Factory.CreateClient();
+            var response = await client.PostAsync(url, content);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
             return responseString;
@@ -43,24 +39,24 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             {
                 Headers = { ContentType = new MediaTypeHeaderValue("application/json") }
             };
-            var _client = Factory.CreateClient();
-            var response = await _client.PutAsync(url, content);
+            var client = Factory.CreateClient();
+            var response = await client.PutAsync(url, content);
             response.EnsureSuccessStatusCode();
         }
 
         private async Task DeleteAsync(string userId)
         {
             var url = $"/User/{userId}";
-            var _client = Factory.CreateClient();
-            var response = await _client.DeleteAsync(url);
+            var client = Factory.CreateClient();
+            var response = await client.DeleteAsync(url);
             response.EnsureSuccessStatusCode();
         }
 
         private async Task<User> GetAsync(string userId)
         {
             var url = $"/User/{userId}";
-            var _client = Factory.CreateClient();
-            var response = await _client.GetAsync(url);
+            var client = Factory.CreateClient();
+            var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
             User user = null;
@@ -153,10 +149,10 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         [Fact]
         public async Task Get_All_Test_Async()
         {
-            var url = "/User?Region=sul&Type=laborious&PageNumber=1&PageSize=10";
+            var url = "/User?Region=sul&Type=laborious";
 
             //// Exemplo de como mockar um serviço no método
-            //var _client = Factory.WithWebHostBuilder(builder =>
+            //var client = Factory.WithWebHostBuilder(builder =>
             //{
             //    builder.ConfigureTestServices(services =>
             //    {
@@ -164,8 +160,8 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             //    });
             //}).CreateClient();
 
-            var _client = Factory.CreateClient();
-            var response = await _client.GetAsync(url);
+            var client = Factory.CreateClient();
+            var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
             var usersResult = JsonSerializer.Deserialize<UsersResult>(responseString);

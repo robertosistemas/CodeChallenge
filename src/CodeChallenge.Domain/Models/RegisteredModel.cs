@@ -8,7 +8,7 @@ namespace CodeChallenge.Domain.Models
         [JsonPropertyName("date")]
         public DateTime Date { get; set; }
 
-        [JsonPropertyName("age")]
-        public int Age { get; set; }
+        //[JsonPropertyName("age")]
+        //public int Age { get; set; }
     }
 }

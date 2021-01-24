@@ -63,3 +63,4 @@ Thumbs.db
 /src/CodeChallenge.Application/obj
 /src/CodeChallenge.WebApi/wwwroot/App_Data/output-backend.json
 /test/CodeChallenge.IntegrationsTests/BuildReports
+/src/CodeChallenge.WebApi/wwwroot/App_Data/output-backend-csv.json
