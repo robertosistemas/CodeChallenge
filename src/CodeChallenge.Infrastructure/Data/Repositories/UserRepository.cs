@@ -59,14 +59,12 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
             var users = await DatabaseContext.GetDataAsync();
 
             if (!string.IsNullOrWhiteSpace(userPaged.Region))
-                users = users.Where(f => f?.Location?.Region != null && f.Location.Region.Equals(userPaged.Region)).ToList();
+                users = users.Where(f => string.Compare(f?.Location?.Region, userPaged.Region, true) == 0).ToList();
 
             if (!string.IsNullOrWhiteSpace(userPaged.Type))
-                users = users.Where(f => f.Type != null && f.Type.Equals(userPaged.Type)).ToList();
+                users = users.Where(f => string.Compare(f.Type, userPaged.Type, true) == 0).ToList();
 
             var skip = (userPaged.PageNumber - 1) * userPaged.PageSize;
-            if (skip >= users.Count)
-                skip = users.Count;
             var itensPaged = users.Skip(skip).Take(userPaged.PageSize).ToList();
             return (itensPaged, users.Count);
         }
