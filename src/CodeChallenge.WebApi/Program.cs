@@ -4,9 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CodeChallenge.WebApi
 {
-    [ExcludeFromCodeCoverage]
     public static class Program
     {
+        [ExcludeFromCodeCoverage]
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

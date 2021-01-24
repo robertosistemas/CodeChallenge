@@ -10,13 +10,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace CodeChallenge.WebApi
 {
-    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -24,9 +24,11 @@ namespace CodeChallenge.WebApi
             Configuration = configuration;
         }
 
+        [ExcludeFromCodeCoverage]
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -36,16 +38,19 @@ namespace CodeChallenge.WebApi
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserServices, UserServices>();
 
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-                {
-                    Title = "Juntos Somos Mais API",
-                    Version = "v1",
-                    Description = "Juntos Somos Mais - Challenge",
-                });
-            });
+            services.AddSwaggerGen(SwaggerOptions);
 
+        }
+
+        [ExcludeFromCodeCoverage]
+        private void SwaggerOptions(SwaggerGenOptions options)
+        {
+            options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+            {
+                Title = "Juntos Somos Mais API",
+                Version = "v1",
+                Description = "Juntos Somos Mais - Challenge",
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

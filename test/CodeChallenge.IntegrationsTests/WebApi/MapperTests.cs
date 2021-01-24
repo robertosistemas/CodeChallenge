@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
 using CodeChallenge.Domain.Models;
-using CodeChallenge.IntegrationsTests.WebApi;
 using CodeChallenge.WebApi;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;
 
-namespace CodeChallenge.IntegrationsTests
+namespace CodeChallenge.IntegrationsTests.WebApi
 {
     public class MapperTests : IntegrateTestBase<Startup>, IClassFixture<ApiWebApplicationFactory<Startup>>
     {
-        public MapperTests(ApiWebApplicationFactory<Startup> factory) : base(factory)
+        public MapperTests(SetupFixture setupFixture, ApiWebApplicationFactory<Startup> factory) : base(setupFixture, factory)
         {
+
         }
 
         [Fact]

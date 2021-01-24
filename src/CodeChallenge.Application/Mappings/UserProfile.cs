@@ -28,8 +28,7 @@ namespace CodeChallenge.Application.Mappings
 
         private string OnlyNumbers(string text)
         {
-            var numbers = text ?? string.Empty;
-            return string.Join(string.Empty, numbers.ToCharArray().Where(f => char.IsNumber(f)));
+            return string.Join(string.Empty, $"{text}".ToCharArray().Where(f => char.IsNumber(f)));
         }
 
         private string TransformPhoneNumber(string number)

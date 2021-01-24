@@ -11,7 +11,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
 {
     public abstract class UserControllerTests<TStartup> : IntegrateTestBase<TStartup> where TStartup : class
     {
-        public UserControllerTests(ApiWebApplicationFactory<TStartup> factory) : base(factory)
+        public UserControllerTests(SetupFixture setupFixture, ApiWebApplicationFactory<TStartup> factory) : base(setupFixture, factory)
         {
 
         }

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.IO;
 
 namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
 {
@@ -16,18 +14,6 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
                 .Build();
             builder.UseConfiguration(configuration);
             builder.ConfigureServices(ConfigureTestServices);
-
-            InicializeTest(configuration);
-        }
-
-        private void InicializeTest(IConfiguration configuration)
-        {
-            var projectDir = Directory.GetCurrentDirectory();
-            var configPath = Path.Combine(projectDir, "appsettings.json");
-            string _outputFileName = configuration["outputFileName"];
-            string _fullOutputFileName = $"{AppDomain.CurrentDomain.GetData("DataDirectory")}\\{_outputFileName}";
-            if (File.Exists(_fullOutputFileName))
-                File.Delete(_fullOutputFileName);
         }
 
         /// <summary>
