@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using CodeChallenge.Application.DataTransferObjects;
 using CodeChallenge.Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CodeChallenge.Application.Mappings
 {
@@ -28,7 +27,7 @@ namespace CodeChallenge.Application.Mappings
 
         private string OnlyNumbers(string text)
         {
-            return string.Join(string.Empty, $"{text}".ToCharArray().Where(f => char.IsNumber(f)));
+            return Regex.Replace(text, @"[^\d]", "");
         }
 
         private string TransformPhoneNumber(string number)

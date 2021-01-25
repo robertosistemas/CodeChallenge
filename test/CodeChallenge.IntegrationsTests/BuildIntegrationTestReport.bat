@@ -1,4 +1,3 @@
-﻿
 echo Gerando relatorio de cobertura de testes
 
 rmdir .\BuildReports\IntegrationTests /Q /S
@@ -23,3 +22,4 @@ cd %back%
 dotnet %USERPROFILE%\.nuget\packages\reportgenerator\4.8.4\tools\netcoreapp3.0\ReportGenerator.dll "-reports:BuildReports\IntegrationTests\coverage.cobertura.xml" "-targetdir:BuildReports\Coverage" -reporttypes:HTML;HTMLSummary
 
 start .\BuildReports\Coverage\index.html
+pause

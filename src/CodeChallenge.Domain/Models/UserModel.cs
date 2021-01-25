@@ -8,9 +8,10 @@ namespace CodeChallenge.Domain.Models
     {
         public UserModel()
         {
-            this.Id = Guid.NewGuid();
+            Id = Guid.NewGuid();
             TelephoneNumbers = new List<string>();
             MobileNumbers = new List<string>();
+            Location = new LocationModel() { Region = string.Empty };
         }
 
         [JsonPropertyName("id")]

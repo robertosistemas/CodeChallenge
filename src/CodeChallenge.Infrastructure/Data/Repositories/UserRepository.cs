@@ -40,12 +40,8 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
         public async Task DeleteAsync(Guid id)
         {
             var users = await DatabaseContext.GetDataAsync();
-            var userMatched = users.Where(f => f.Id.Equals(id));
-            if (userMatched != null && userMatched.Count() > 0)
-            {
-                users = users.Except(userMatched).ToList();
-                await DatabaseContext.UpdateDataAsync(users);
-            }
+            users.RemoveAll(f => f.Id.Equals(id));
+            await DatabaseContext.UpdateDataAsync(users);
         }
 
         public async Task<UserModel> GetAsync(Guid id)
@@ -59,7 +55,7 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
             var users = await DatabaseContext.GetDataAsync();
 
             if (!string.IsNullOrWhiteSpace(userPaged.Region))
-                users = users.Where(f => string.Compare(f?.Location?.Region, userPaged.Region, true) == 0).ToList();
+                users = users.Where(f => f.Location.Region == userPaged.Region).ToList();
 
             if (!string.IsNullOrWhiteSpace(userPaged.Type))
                 users = users.Where(f => string.Compare(f.Type, userPaged.Type, true) == 0).ToList();

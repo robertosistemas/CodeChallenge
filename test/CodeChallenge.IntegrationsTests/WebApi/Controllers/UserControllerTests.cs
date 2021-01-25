@@ -67,10 +67,9 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             return user;
         }
 
-        [Fact]
-        public async Task Add_Test_Async()
+        private User CreateUser()
         {
-            var user = new User
+            return new User
             {
                 Gender = "m",
                 Name = new Name
@@ -78,8 +77,18 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
                     Title = "Mr",
                     First = "Roberto",
                     Last = "Silva"
+                },
+                Location = new Location()
+                {
+                    Region = "sul"
                 }
             };
+        }
+
+        [Fact]
+        public async Task Add_Test_Async()
+        {
+            var user = CreateUser();
             var responseString = await AddAsync(user);
             responseString.Should().NotBeNullOrEmpty();
         }
@@ -87,16 +96,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         [Fact]
         public async Task Update_Test_Async()
         {
-            var user = new User
-            {
-                Gender = "m",
-                Name = new Name
-                {
-                    Title = "Mr",
-                    First = "Roberto",
-                    Last = "Silva"
-                }
-            };
+            var user = CreateUser();
             var userId = await AddAsync(user);
 
             var matchedUser = await GetAsync(userId);
@@ -110,16 +110,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         [Fact]
         public async Task Delete_Test_Async()
         {
-            var user = new User
-            {
-                Gender = "m",
-                Name = new Name
-                {
-                    Title = "Mr",
-                    First = "Roberto",
-                    Last = "Silva"
-                }
-            };
+            var user = CreateUser();
             var userId = await AddAsync(user);
             await DeleteAsync(userId);
             var CheckedUser = await GetAsync(userId);
@@ -129,16 +120,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         [Fact]
         public async Task Get_Test_Async()
         {
-            var user = new User
-            {
-                Gender = "m",
-                Name = new Name
-                {
-                    Title = "Mr",
-                    First = "Roberto",
-                    Last = "Silva"
-                }
-            };
+            var user = CreateUser();
             var userId = await AddAsync(user);
 
             var userMatched = await GetAsync(userId);
