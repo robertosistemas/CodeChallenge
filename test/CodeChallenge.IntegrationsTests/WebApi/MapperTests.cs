@@ -10,7 +10,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi
 {
     public class MapperTests : IntegrateTestBase<Startup>, IClassFixture<ApiWebApplicationFactory<Startup>>
     {
-        public MapperTests(SetupFixture setupFixture, ApiWebApplicationFactory<Startup> factory) : base(setupFixture, factory)
+        public MapperTests(ApiWebApplicationFactory<Startup> factory) : base(factory)
         {
 
         }
