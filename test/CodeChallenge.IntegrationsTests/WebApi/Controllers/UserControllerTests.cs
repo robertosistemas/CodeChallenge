@@ -78,7 +78,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
 
             if (matchedUser != default)
             {
-                matchedUser.Name = new Name { Last = "Carlos" };
+                matchedUser.Name.Last = "Carlos";
 
                 var url = $"/User/{userId}";
                 var payload = JsonSerializer.Serialize(matchedUser);

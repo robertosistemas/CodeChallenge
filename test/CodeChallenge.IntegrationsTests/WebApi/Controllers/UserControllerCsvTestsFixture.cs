@@ -14,7 +14,6 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
                 .Build();
             builder.UseConfiguration(configuration);
             builder.ConfigureServices(ConfigureTestServices);
-            builder.UseSetting("https_port", "5001");
         }
 
         /// <summary>

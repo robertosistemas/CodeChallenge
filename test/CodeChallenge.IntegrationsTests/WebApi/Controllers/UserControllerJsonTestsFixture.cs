@@ -13,7 +13,6 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
                 .AddJsonFile("appsettings.json")
                 .Build();
             builder.UseConfiguration(configuration);
-            builder.UseSetting("https_port", "5001");
             builder.ConfigureServices(ConfigureTestServices);
         }
 
