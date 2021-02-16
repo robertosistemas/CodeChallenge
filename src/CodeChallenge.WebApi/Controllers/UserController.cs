@@ -25,7 +25,7 @@ namespace CodeChallenge.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<User> Get(Guid id)
+        public async Task<User?> Get(Guid id)
         {
             return await _userServices.GetAsync(id);
         }

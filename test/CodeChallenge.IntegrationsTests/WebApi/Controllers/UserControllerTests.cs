@@ -1,5 +1,8 @@
 ﻿using CodeChallenge.Application.DataTransferObjects;
+using CodeChallenge.Application.Services;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -16,58 +19,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
 
         }
 
-        private async Task<string> AddAsync(User user)
-        {
-            var url = "/User";
-            var payload = JsonSerializer.Serialize(user);
-            var content = new StringContent(payload, Encoding.UTF8)
-            {
-                Headers = { ContentType = new MediaTypeHeaderValue("application/json") }
-            };
-            var client = Factory.CreateClient();
-            var response = await client.PostAsync(url, content);
-            response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-            return responseString;
-        }
-
-        private async Task UpdateAsync(string userId, User user)
-        {
-            var url = $"/User/{userId}";
-            var payload = JsonSerializer.Serialize(user);
-            var content = new StringContent(payload, Encoding.UTF8)
-            {
-                Headers = { ContentType = new MediaTypeHeaderValue("application/json") }
-            };
-            var client = Factory.CreateClient();
-            var response = await client.PutAsync(url, content);
-            response.EnsureSuccessStatusCode();
-        }
-
-        private async Task DeleteAsync(string userId)
-        {
-            var url = $"/User/{userId}";
-            var client = Factory.CreateClient();
-            var response = await client.DeleteAsync(url);
-            response.EnsureSuccessStatusCode();
-        }
-
-        private async Task<User> GetAsync(string userId)
-        {
-            var url = $"/User/{userId}";
-            var client = Factory.CreateClient();
-            var response = await client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-            User user = null;
-            if (!string.IsNullOrWhiteSpace(responseString))
-            {
-                user = JsonSerializer.Deserialize<User>(responseString);
-            }
-            return user;
-        }
-
-        private User CreateUser()
+        private static User CreateUser()
         {
             return new User
             {
@@ -85,34 +37,77 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             };
         }
 
+        private async Task<string> AddAsync(User user)
+        {
+            var userServices = Factory.Services.GetRequiredService<IUserServices>();
+            var userId = await userServices.AddAsync(user);
+            return userId.ToString();
+        }
+
+        private async Task<User?> GetAsync(string userId)
+        {
+            var userServices = Factory.Services.GetRequiredService<IUserServices>();
+            return await userServices.GetAsync(Guid.Parse(userId));
+        }
+
         [Fact]
         public async Task Add_Test_Async()
         {
-            var user = CreateUser();
-            var responseString = await AddAsync(user);
+            var user = UserControllerTests<TStartup>.CreateUser();
+            var url = "/User";
+            var payload = JsonSerializer.Serialize(user);
+            var content = new StringContent(payload, Encoding.UTF8)
+            {
+                Headers = { ContentType = new MediaTypeHeaderValue("application/json") }
+            };
+            var client = Factory.CreateClient();
+            var response = await client.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
             responseString.Should().NotBeNullOrEmpty();
         }
 
         [Fact]
         public async Task Update_Test_Async()
         {
-            var user = CreateUser();
+            var user = UserControllerTests<TStartup>.CreateUser();
             var userId = await AddAsync(user);
 
             var matchedUser = await GetAsync(userId);
-            matchedUser.Name.Last = "Carlos";
-            await UpdateAsync(userId, matchedUser);
+            Assert.NotNull(matchedUser);
 
-            var updatedUser = await GetAsync(userId);
-            updatedUser.Name.Last.Should().Equals("Carlos");
+            if (matchedUser != default)
+            {
+                matchedUser.Name = new Name { Last = "Carlos" };
+
+                var url = $"/User/{userId}";
+                var payload = JsonSerializer.Serialize(matchedUser);
+                var content = new StringContent(payload, Encoding.UTF8)
+                {
+                    Headers = { ContentType = new MediaTypeHeaderValue("application/json") }
+                };
+                var client = Factory.CreateClient();
+                var response = await client.PutAsync(url, content);
+                response.EnsureSuccessStatusCode();
+
+                var updatedUser = await GetAsync(userId);
+                Assert.NotNull(updatedUser);
+                if (updatedUser != default)
+                    updatedUser.Name.Last.Should().Equals("Carlos");
+            }
         }
 
         [Fact]
         public async Task Delete_Test_Async()
         {
-            var user = CreateUser();
+            var user = UserControllerTests<TStartup>.CreateUser();
             var userId = await AddAsync(user);
-            await DeleteAsync(userId);
+
+            var url = $"/User/{userId}";
+            var client = Factory.CreateClient();
+            var response = await client.DeleteAsync(url);
+            response.EnsureSuccessStatusCode();
+
             var CheckedUser = await GetAsync(userId);
             CheckedUser.Should().BeNull();
         }
@@ -120,12 +115,20 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         [Fact]
         public async Task Get_Test_Async()
         {
-            var user = CreateUser();
+            var user = UserControllerTests<TStartup>.CreateUser();
             var userId = await AddAsync(user);
 
-            var userMatched = await GetAsync(userId);
-
-            userMatched.Id.ToString().Should().Equals(userId);
+            var url = $"/User/{userId}";
+            var client = Factory.CreateClient();
+            var response = await client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            User? userMatched = default;
+            if (!string.IsNullOrWhiteSpace(responseString))
+            {
+                userMatched = JsonSerializer.Deserialize<User?>(responseString);
+            }
+            userMatched?.Id.ToString().Should().Equals(userId);
         }
 
         [Fact]
@@ -146,9 +149,10 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            var usersResult = JsonSerializer.Deserialize<UsersResult>(responseString);
-
-            usersResult.Users.Count.Should().BeGreaterThan(0);
+            var usersResult = JsonSerializer.Deserialize<UsersResult?>(responseString);
+            Assert.NotNull(usersResult);
+            if (usersResult != default)
+                usersResult.Users.Count.Should().BeGreaterThan(0);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace CodeChallenge.Domain.Abstractions.Repositories
         Task<Guid> AddAsync(UserModel user);
         Task UpdateAsync(Guid id, UserModel user);
         Task DeleteAsync(Guid id);
-        Task<UserModel> GetAsync(Guid id);
+        Task<UserModel?> GetAsync(Guid id);
         Task<(List<UserModel> Itens, int TotalCount)> GetAllAsync(UserPagedModel userPaged);
     }
 }

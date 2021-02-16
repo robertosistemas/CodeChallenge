@@ -6,10 +6,10 @@ namespace CodeChallenge.Application.DataTransferObjects
     public class Paged : IPaged
     {
         [JsonPropertyName("pageNumber")]
-        public int PageNumber { get; set; }
+        public int PageNumber { get; set; } = default!;
 
         [JsonPropertyName("pageSize")]
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = default!;
 
         public void Normalize()
         {

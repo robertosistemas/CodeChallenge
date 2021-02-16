@@ -36,10 +36,10 @@ namespace CodeChallenge.Application.Services
             await _userRepository.DeleteAsync(id);
         }
 
-        public async Task<User> GetAsync(Guid id)
+        public async Task<User?> GetAsync(Guid id)
         {
             var userModel = await _userRepository.GetAsync(id);
-            return _mapper.Map<User>(userModel);
+            return _mapper.Map<User?>(userModel);
         }
 
         public async Task<UsersResult> GetAllAsync(UserPaged userPaged)

@@ -5,12 +5,12 @@ namespace CodeChallenge.Domain.Models
     public class NameModel
     {
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string Title { get; set; } = default!;
 
         [JsonPropertyName("first")]
-        public string First { get; set; }
+        public string First { get; set; } = default!;
 
         [JsonPropertyName("last")]
-        public string Last { get; set; }
+        public string Last { get; set; } = default!;
     }
 }

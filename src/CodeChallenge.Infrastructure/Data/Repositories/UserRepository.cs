@@ -44,7 +44,7 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
             await DatabaseContext.UpdateDataAsync(users);
         }
 
-        public async Task<UserModel> GetAsync(Guid id)
+        public async Task<UserModel?> GetAsync(Guid id)
         {
             var users = await DatabaseContext.GetDataAsync();
             return users.FirstOrDefault(f => f.Id.Equals(id));

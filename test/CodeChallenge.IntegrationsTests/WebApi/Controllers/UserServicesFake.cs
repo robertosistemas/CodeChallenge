@@ -24,7 +24,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             return await Task.FromResult(usersResult);
         }
 
-        public async Task<User> GetAsync(Guid id)
+        public async Task<User?> GetAsync(Guid id)
         {
             return await Task.FromResult(new User());
         }

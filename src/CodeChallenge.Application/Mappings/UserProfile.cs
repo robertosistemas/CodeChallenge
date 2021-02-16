@@ -22,7 +22,7 @@ namespace CodeChallenge.Application.Mappings
                 .ForMember(dest => dest.TelephoneNumbers, opt => opt.MapFrom(src => new List<string> { TransformPhoneNumber(src.Phone) }))
                 .ForMember(dest => dest.MobileNumbers, opt => opt.MapFrom(src => new List<string> { TransformPhoneNumber(src.Cell) }))
                 .ForMember(dest => dest.Nationality, opt => opt.MapFrom(src => "BR"))
-                .AfterMap((src, dest) => dest.Location.Region = UserProfile.EstadosRegioes[src.Location.State]);
+                .AfterMap((src, dest) => dest.Location.Region = EstadosRegioes[src.Location.State]);
         }
 
         private string OnlyNumbers(string text)

@@ -94,18 +94,21 @@ namespace CodeChallenge.Infrastructure.Data
             var result = ReadCache();
             if (result == null)
             {
+                result = new List<UserModel>();
                 var options = new JsonSerializerOptions()
                 {
                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                 };
                 var json = File.ReadAllText(_fullOutputFileName, Encoding.GetEncoding(65001));
-                result = JsonSerializer.Deserialize<List<UserModel>>(json, options);
+                var resultList = JsonSerializer.Deserialize<List<UserModel>?>(json, options);
+                if (resultList != default)
+                    result = resultList;
                 UpdateCache(result);
             }
             return result;
         }
 
-        private void UpdateCache(List<UserModel> users)
+        private void UpdateCache(List<UserModel>? users)
         {
             if (users == null || !users.Any())
                 _cache.Remove(_inputBackEndKey);
@@ -113,12 +116,12 @@ namespace CodeChallenge.Infrastructure.Data
                 _cache.Set(_inputBackEndKey, users);
         }
 
-        private List<UserModel> ReadCache()
+        private List<UserModel>? ReadCache()
         {
             return _cache.Get(_inputBackEndKey) as List<UserModel>;
         }
 
-        private async Task<string> GeDataFromUrlAsync(string url)
+        private static async Task<string> GeDataFromUrlAsync(string url)
         {
             using var client = new WebClient();
             byte[] content = client.DownloadData(url);
@@ -136,11 +139,14 @@ namespace CodeChallenge.Infrastructure.Data
                 result = new List<UserModel>();
                 var json = await GeDataFromUrlAsync(_inputBackEndJsonUrl);
                 var usersResult = JsonSerializer.Deserialize<UsersImportResultModel>(json);
-                foreach (var item in usersResult.Results)
+                if (usersResult != default)
                 {
-                    var currentItem = item;
-                    var user = _mapper.Map<UserModel>(currentItem);
-                    result.Add(user);
+                    foreach (var item in usersResult.Results)
+                    {
+                        var currentItem = item;
+                        var user = _mapper.Map<UserModel>(currentItem);
+                        result.Add(user);
+                    }
                 }
                 SaveDataToFile(result);
                 UpdateCache(result);
@@ -196,7 +202,7 @@ namespace CodeChallenge.Infrastructure.Data
         private const int PICTURE_MEDIUM = 20;
         private const int PICTURE_THUMBNAIL = 21;
 
-        private UserImportModel ConvertCsvToUserAsync(string currentItem)
+        private static UserImportModel ConvertCsvToUserAsync(string currentItem)
         {
             if (currentItem.StartsWith("\""))
                 currentItem = currentItem[1..];

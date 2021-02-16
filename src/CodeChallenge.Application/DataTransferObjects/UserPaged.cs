@@ -5,9 +5,9 @@ namespace CodeChallenge.Application.DataTransferObjects
     public class UserPaged : Paged
     {
         [JsonPropertyName("region")]
-        public string Region { get; set; }
+        public string? Region { get; set; }
 
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
     }
 }

@@ -5,24 +5,24 @@ namespace CodeChallenge.Application.DataTransferObjects
     public class Location
     {
         [JsonPropertyName("region")]
-        public string Region { get; set; }
+       public string?Region { get; set; }
 
         [JsonPropertyName("street")]
-        public string Street { get; set; }
+       public string?Street { get; set; }
 
         [JsonPropertyName("city")]
-        public string City { get; set; }
+       public string?City { get; set; }
 
         [JsonPropertyName("state")]
-        public string State { get; set; }
+       public string?State { get; set; }
 
         [JsonPropertyName("postcode")]
-        public int Postcode { get; set; }
+        public int? Postcode { get; set; }
 
         [JsonPropertyName("coordinates")]
-        public Coordinates Coordinates { get; set; }
+        public Coordinates? Coordinates { get; set; }
 
         [JsonPropertyName("timezone")]
-        public Timezone Timezone { get; set; }
+        public Timezone? Timezone { get; set; }
     }
 }

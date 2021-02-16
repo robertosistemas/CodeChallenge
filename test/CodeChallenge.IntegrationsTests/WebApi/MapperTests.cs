@@ -69,7 +69,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi
 
             //Act
 
-            var mapper = Factory.Services.GetService<IMapper>();
+            var mapper = Factory.Services.GetRequiredService<IMapper>();
             var user = mapper.Map<UserModel>(userImport);
 
             // Assert
@@ -146,7 +146,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi
 
             //Act
 
-            var mapper = Factory.Services.GetService<IMapper>();
+            var mapper = Factory.Services.GetRequiredService<IMapper>();
             var user = mapper.Map<UserModel>(userImport);
 
             // Assert
@@ -223,7 +223,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi
 
             //Act
 
-            var mapper = Factory.Services.GetService<IMapper>();
+            var mapper = Factory.Services.GetRequiredService<IMapper>();
             var user = mapper.Map<UserModel>(userImport);
 
             // Assert
@@ -300,7 +300,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi
 
             //Act
 
-            var mapper = Factory.Services.GetService<IMapper>();
+            var mapper = Factory.Services.GetRequiredService<IMapper>();
             var user = mapper.Map<UserModel>(userImport);
 
             // Assert
