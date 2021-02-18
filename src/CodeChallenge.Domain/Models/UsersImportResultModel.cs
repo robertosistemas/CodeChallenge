@@ -11,6 +11,6 @@ namespace CodeChallenge.Domain.Models
         }
 
         [JsonPropertyName("results")]
-        public List<UserImportModel> Results { get; set; } = default!;
+        public List<UserImportModel> Results { get; set; } = null!;
     }
 }

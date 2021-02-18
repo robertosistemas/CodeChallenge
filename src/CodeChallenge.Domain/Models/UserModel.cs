@@ -8,46 +8,44 @@ namespace CodeChallenge.Domain.Models
     {
         public UserModel()
         {
-            Id = Guid.NewGuid();
             TelephoneNumbers = new List<string>();
             MobileNumbers = new List<string>();
-            Location = new LocationModel() { Region = string.Empty };
         }
 
         [JsonPropertyName("id")]
-        public Guid Id { get; set; } = default!;
+        public Guid Id { get; set; }
 
         [JsonPropertyName("type")]
-        public string Type { get; set; } = default!;
+        public string Type { get; set; } = null!;
 
         [JsonPropertyName("gender")]
-        public string Gender { get; set; } = default!;
+        public string Gender { get; set; } = null!;
 
         [JsonPropertyName("name")]
-        public NameModel Name { get; set; } = default!;
+        public NameModel Name { get; set; } = null!;
 
         [JsonPropertyName("location")]
-        public LocationModel Location { get; set; } = default!;
+        public LocationModel Location { get; set; } = null!;
 
         [JsonPropertyName("email")]
-        public string Email { get; set; } = default!;
+        public string Email { get; set; } = null!;
 
         [JsonPropertyName("birthday")]
-        public DateTime Birthday { get; set; } = default!;
+        public DateTime Birthday { get; set; }
 
         [JsonPropertyName("registered")]
-        public DateTime Registered { get; set; } = default!;
+        public DateTime Registered { get; set; }
 
         [JsonPropertyName("telephoneNumbers")]
-        public List<string> TelephoneNumbers { get; set; } = default!;
+        public List<string> TelephoneNumbers { get; set; } = null!;
 
         [JsonPropertyName("mobileNumbers")]
-        public List<string> MobileNumbers { get; set; } = default!;
+        public List<string> MobileNumbers { get; set; } = null!;
 
         [JsonPropertyName("picture")]
-        public PictureModel Picture { get; set; } = default!;
+        public PictureModel Picture { get; set; } = null!;
 
         [JsonPropertyName("nationality")]
-        public string Nationality { get; set; } = default!;
+        public string Nationality { get; set; } = null!;
     }
 }

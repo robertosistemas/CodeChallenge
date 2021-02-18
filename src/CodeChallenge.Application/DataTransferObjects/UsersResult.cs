@@ -11,15 +11,15 @@ namespace CodeChallenge.Application.DataTransferObjects
         }
 
         [JsonPropertyName("pageNumber")]
-        public int PageNumber { get; set; } = default!;
+        public int PageNumber { get; set; }
 
         [JsonPropertyName("pageSize")]
-        public int PageSize { get; set; } = default!;
+        public int PageSize { get; set; }
 
         [JsonPropertyName("totalCount")]
-        public int TotalCount { get; set; } = default!;
+        public int TotalCount { get; set; }
 
         [JsonPropertyName("users")]
-        public List<User> Users { get; set; }
+        public List<User> Users { get; set; } = null!;
     }
 }

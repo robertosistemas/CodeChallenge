@@ -6,7 +6,7 @@ namespace CodeChallenge.Domain.Models
     public class DobModel
     {
         [JsonPropertyName("date")]
-        public DateTime Date { get; set; } = default!;
+        public DateTime Date { get; set; }
 
         //[JsonPropertyName("age")]
         //public int Age { get; set; }

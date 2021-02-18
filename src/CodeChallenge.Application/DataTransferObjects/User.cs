@@ -37,10 +37,10 @@ namespace CodeChallenge.Application.DataTransferObjects
         public DateTime? Registered { get; set; }
 
         [JsonPropertyName("telephoneNumbers")]
-        public List<string> TelephoneNumbers { get; set; }
+        public List<string> TelephoneNumbers { get; set; } = null!;
 
         [JsonPropertyName("mobileNumbers")]
-        public List<string> MobileNumbers { get; set; }
+        public List<string> MobileNumbers { get; set; } = null!;
 
         [JsonPropertyName("picture")]
         public Picture? Picture { get; set; }
