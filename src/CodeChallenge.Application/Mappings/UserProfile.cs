@@ -25,12 +25,12 @@ namespace CodeChallenge.Application.Mappings
                 .AfterMap((src, dest) => dest.Location.Region = EstadosRegioes[src.Location.State]);
         }
 
-        private string OnlyNumbers(string text)
+        private static string OnlyNumbers(string text)
         {
             return Regex.Replace(text, @"[^\d]", "");
         }
 
-        private string TransformPhoneNumber(string number)
+        private static string TransformPhoneNumber(string number)
         {
             return $"+55{OnlyNumbers(number)}";
         }
