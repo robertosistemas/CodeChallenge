@@ -8,7 +8,6 @@ namespace CodeChallenge.Application.DataTransferObjects
     {
         public User()
         {
-            Id = Guid.NewGuid();
             TelephoneNumbers = new List<string>();
             MobileNumbers = new List<string>();
         }
@@ -23,7 +22,7 @@ namespace CodeChallenge.Application.DataTransferObjects
         public string? Gender { get; set; }
 
         [JsonPropertyName("name")]
-        public Name Name { get; set; } = default!;
+        public Name? Name { get; set; }
 
         [JsonPropertyName("location")]
         public Location? Location { get; set; }
@@ -38,10 +37,10 @@ namespace CodeChallenge.Application.DataTransferObjects
         public DateTime? Registered { get; set; }
 
         [JsonPropertyName("telephoneNumbers")]
-        public List<string>? TelephoneNumbers { get; set; }
+        public List<string> TelephoneNumbers { get; set; }
 
         [JsonPropertyName("mobileNumbers")]
-        public List<string>? MobileNumbers { get; set; }
+        public List<string> MobileNumbers { get; set; }
 
         [JsonPropertyName("picture")]
         public Picture? Picture { get; set; }

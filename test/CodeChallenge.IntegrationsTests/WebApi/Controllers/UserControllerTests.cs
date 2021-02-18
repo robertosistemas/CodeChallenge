@@ -53,8 +53,8 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         [Fact]
         public async Task Add_Test_Async()
         {
-            var user = UserControllerTests<TStartup>.CreateUser();
             var url = "/User";
+            var user = CreateUser();
             var payload = JsonSerializer.Serialize(user);
             var content = new StringContent(payload, Encoding.UTF8)
             {
@@ -70,7 +70,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         [Fact]
         public async Task Update_Test_Async()
         {
-            var user = UserControllerTests<TStartup>.CreateUser();
+            var user = CreateUser();
             var userId = await AddAsync(user);
 
             var matchedUser = await GetAsync(userId);
@@ -78,7 +78,8 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
 
             if (matchedUser != default)
             {
-                matchedUser.Name.Last = "Carlos";
+                if (matchedUser?.Name != default)
+                    matchedUser.Name.Last = "Carlos";
 
                 var url = $"/User/{userId}";
                 var payload = JsonSerializer.Serialize(matchedUser);
@@ -92,7 +93,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
 
                 var updatedUser = await GetAsync(userId);
                 Assert.NotNull(updatedUser);
-                if (updatedUser != default)
+                if (updatedUser?.Name != default)
                     updatedUser.Name.Last.Should().Equals("Carlos");
             }
         }
@@ -100,7 +101,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         [Fact]
         public async Task Delete_Test_Async()
         {
-            var user = UserControllerTests<TStartup>.CreateUser();
+            var user = CreateUser();
             var userId = await AddAsync(user);
 
             var url = $"/User/{userId}";
@@ -115,7 +116,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         [Fact]
         public async Task Get_Test_Async()
         {
-            var user = UserControllerTests<TStartup>.CreateUser();
+            var user = CreateUser();
             var userId = await AddAsync(user);
 
             var url = $"/User/{userId}";
@@ -123,12 +124,12 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            User? userMatched = default;
+            responseString.Should().NotBeNullOrEmpty();
             if (!string.IsNullOrWhiteSpace(responseString))
             {
-                userMatched = JsonSerializer.Deserialize<User?>(responseString);
+                User? userMatched = JsonSerializer.Deserialize<User?>(responseString);
+                userMatched?.Id.ToString().Should().Equals(userId);
             }
-            userMatched?.Id.ToString().Should().Equals(userId);
         }
 
         [Fact]
