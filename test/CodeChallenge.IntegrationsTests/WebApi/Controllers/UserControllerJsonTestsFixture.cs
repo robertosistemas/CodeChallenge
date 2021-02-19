@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using CodeChallenge.Domain.Abstractions;
+using CodeChallenge.IntegrationsTests.Mocks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +24,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         /// <param name="services"></param>
         private void ConfigureTestServices(IServiceCollection services)
         {
-            // services.AddScoped<IUserServices, UserServicesFake>();
+            services.AddSingleton<IDatabaseContext, DatabaseContextFake>();
         }
     }
 }

@@ -23,6 +23,8 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
         {
             return new User
             {
+                Id = System.Guid.NewGuid(),
+                Type = "laborious",
                 Gender = "m",
                 Name = new Name
                 {
@@ -30,10 +32,26 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
                     First = "Roberto",
                     Last = "Silva"
                 },
-                Location = new Location()
+                Location = new Location
                 {
-                    Region = "sul"
-                }
+                    Region = "sul",
+                    Coordinates = new Coordinates
+                    {
+                        Latitude = "-2.6880",
+                        Longitude = "-146.8402"
+                    },
+                    Timezone = new Timezone
+                    {
+                        Description = "Atlantic Time (Canada), Caracas, La Paz",
+                        Offset = "-4:00"
+                    }
+                },
+                Picture = new Picture
+                {
+                    Large = "https://randomuser.me/api/portraits/man/85.jpg",
+                    Medium = "https://randomuser.me/api/portraits/med/man/85.jpg",
+                    Thumbnail = "https://randomuser.me/api/portraits/thumb/man/85.jpg"
+                },
             };
         }
 
@@ -145,6 +163,9 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             //        services.AddScoped<IUserServices, UserServicesFake>();
             //    });
             //}).CreateClient();
+
+            var user = CreateUser();
+            await AddAsync(user);
 
             var client = Factory.CreateClient();
             var response = await client.GetAsync(url);
