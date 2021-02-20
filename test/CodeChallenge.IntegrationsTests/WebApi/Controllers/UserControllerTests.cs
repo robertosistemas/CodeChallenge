@@ -81,8 +81,12 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             var client = Factory.CreateClient();
             var response = await client.PostAsync(url, content);
             response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-            responseString.Should().NotBeNullOrEmpty();
+            var userId = await response.Content.ReadAsStringAsync();
+            userId.Should().NotBeNullOrEmpty();
+            var newUser = await GetAsync(userId);
+            Assert.NotNull(newUser);
+            if (newUser != null)
+                newUser.Id.ToString().Should().Equals(userId);
         }
 
         [Fact]
@@ -141,11 +145,11 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             var client = Factory.CreateClient();
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-            responseString.Should().NotBeNullOrEmpty();
-            if (!string.IsNullOrWhiteSpace(responseString))
+            var payload = await response.Content.ReadAsStringAsync();
+            payload.Should().NotBeNullOrEmpty();
+            if (!string.IsNullOrWhiteSpace(payload))
             {
-                User? userMatched = JsonSerializer.Deserialize<User?>(responseString);
+                User? userMatched = JsonSerializer.Deserialize<User?>(payload);
                 userMatched?.Id.ToString().Should().Equals(userId);
             }
         }
@@ -170,8 +174,8 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             var client = Factory.CreateClient();
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-            var usersResult = JsonSerializer.Deserialize<UsersResult?>(responseString);
+            var payload = await response.Content.ReadAsStringAsync();
+            var usersResult = JsonSerializer.Deserialize<UsersResult?>(payload);
             Assert.NotNull(usersResult);
             if (usersResult != default)
                 usersResult.Users.Count.Should().BeGreaterThan(0);

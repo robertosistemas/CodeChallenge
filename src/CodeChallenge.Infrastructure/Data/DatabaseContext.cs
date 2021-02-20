@@ -25,7 +25,7 @@ namespace CodeChallenge.Infrastructure.Data
         private readonly string _inputBackEndJsonUrl;
         private readonly string _outputFileName;
         private readonly string _fullOutputFileName;
-        private readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(10);
+        private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(10);
 
         public DatabaseContext(IConfiguration configuration, IMapper mapper, IMemoryCache cache)
         {
@@ -41,7 +41,7 @@ namespace CodeChallenge.Infrastructure.Data
 
         public async Task<List<UserModel>> GetDataAsync()
         {
-            await semaphoreSlim.WaitAsync();
+            await _semaphoreSlim.WaitAsync();
             try
             {
                 if (File.Exists(_fullOutputFileName))
@@ -56,20 +56,20 @@ namespace CodeChallenge.Infrastructure.Data
             }
             finally
             {
-                semaphoreSlim.Release();
+                _semaphoreSlim.Release();
             }
         }
 
         public async Task UpdateDataAsync(List<UserModel> users)
         {
-            await semaphoreSlim.WaitAsync();
+            await _semaphoreSlim.WaitAsync();
             try
             {
                 SaveDataToFile(users);
             }
             finally
             {
-                semaphoreSlim.Release();
+                _semaphoreSlim.Release();
             }
         }
 
