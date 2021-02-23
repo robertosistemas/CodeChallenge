@@ -14,15 +14,15 @@ namespace CodeChallenge.IntegrationsTests.Mocks
             _usersModel = new List<UserModel>();
         }
 
-        public async Task<List<UserModel>> GetDataAsync()
+        public Task<List<UserModel>> GetDataAsync()
         {
-            return await Task.FromResult(_usersModel);
+            return Task.FromResult(_usersModel);
         }
 
-        public async Task UpdateDataAsync(List<UserModel> users)
+        public Task UpdateDataAsync(List<UserModel> users)
         {
             _usersModel = users;
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

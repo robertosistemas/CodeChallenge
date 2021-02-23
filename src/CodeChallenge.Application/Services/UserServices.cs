@@ -19,21 +19,21 @@ namespace CodeChallenge.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<Guid> AddAsync(User user)
+        public Task<Guid> AddAsync(User user)
         {
             var userModel = _mapper.Map<UserModel>(user);
-            return await _userRepository.AddAsync(userModel);
+            return _userRepository.AddAsync(userModel);
         }
 
-        public async Task UpdateAsync(Guid id, User user)
+        public Task UpdateAsync(Guid id, User user)
         {
             var userModel = _mapper.Map<UserModel>(user);
-            await _userRepository.UpdateAsync(id, userModel);
+            return _userRepository.UpdateAsync(id, userModel);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public Task DeleteAsync(Guid id)
         {
-            await _userRepository.DeleteAsync(id);
+            return _userRepository.DeleteAsync(id);
         }
 
         public async Task<User?> GetAsync(Guid id)

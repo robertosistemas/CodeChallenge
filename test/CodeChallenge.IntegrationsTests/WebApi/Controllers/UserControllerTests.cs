@@ -62,10 +62,10 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             return userId.ToString();
         }
 
-        private async Task<User?> GetAsync(string userId)
+        private Task<User?> GetAsync(string userId)
         {
             var userServices = Factory.Services.GetRequiredService<IUserServices>();
-            return await userServices.GetAsync(Guid.Parse(userId));
+            return userServices.GetAsync(Guid.Parse(userId));
         }
 
         [Fact]
