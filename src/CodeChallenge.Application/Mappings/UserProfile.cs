@@ -19,8 +19,8 @@ namespace CodeChallenge.Application.Mappings
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.Equals("male") ? "m" : "f"))
                 .ForMember(dest => dest.Birthday, opt => opt.MapFrom(src => src.Dob.Date))
                 .ForMember(dest => dest.Registered, opt => opt.MapFrom(src => src.Registered.Date))
-                .ForMember(dest => dest.TelephoneNumbers, opt => opt.MapFrom(src => new List<string> { TransformPhoneNumber(src.Phone) }))
-                .ForMember(dest => dest.MobileNumbers, opt => opt.MapFrom(src => new List<string> { TransformPhoneNumber(src.Cell) }))
+                .ForMember(dest => dest.TelephoneNumbers, opt => opt.MapFrom(src => TransformPhoneNumber(src.Phone)))
+                .ForMember(dest => dest.MobileNumbers, opt => opt.MapFrom(src => TransformPhoneNumber(src.Cell)))
                 .ForMember(dest => dest.Nationality, opt => opt.MapFrom(src => "BR"))
                 .AfterMap((src, dest) => dest.Location.Region = EstadosRegioes[src.Location.State]);
         }
@@ -30,12 +30,12 @@ namespace CodeChallenge.Application.Mappings
             return Regex.Replace(text, @"[^\d]", "");
         }
 
-        private static string TransformPhoneNumber(string number)
+        private static List<string> TransformPhoneNumber(string number)
         {
-            return $"+55{OnlyNumbers(number)}";
+            return new List<string> { $"+55{OnlyNumbers(number)}" };
         }
 
-        private static readonly Dictionary<string, string> EstadosRegioes = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> EstadosRegioes = new()
             {
                 { "acre", "norte" },
                 { "alagoas", "nordeste" },

@@ -12,10 +12,7 @@ namespace CodeChallenge.WebApi.Controllers
     {
         private readonly IUserServices _userServices;
 
-        public UserController(IUserServices userServices)
-        {
-            _userServices = userServices;
-        }
+        public UserController(IUserServices userServices) => _userServices = userServices;
 
         [HttpGet]
         public Task<UsersResult> Get([FromQuery] UserPaged userPagedDto)

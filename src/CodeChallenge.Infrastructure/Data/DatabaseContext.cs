@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -25,7 +25,7 @@ namespace CodeChallenge.Infrastructure.Data
         private readonly string _inputBackEndJsonUrl;
         private readonly string _outputFileName;
         private readonly string _fullOutputFileName;
-        private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(10);
+        private readonly SemaphoreSlim _semaphoreSlim = new(10);
 
         public DatabaseContext(IConfiguration configuration, IMapper mapper, IMemoryCache cache)
         {
@@ -91,7 +91,7 @@ namespace CodeChallenge.Infrastructure.Data
 
         private List<UserModel> GeDataFromFile()
         {
-            var result = ReadCache();
+            List<UserModel>? result = ReadCache();
             if (result == null)
             {
                 result = new List<UserModel>();
@@ -123,12 +123,12 @@ namespace CodeChallenge.Infrastructure.Data
 
         private static async Task<string> GeDataFromUrlAsync(string url)
         {
-            using var client = new WebClient();
-            byte[] content = client.DownloadData(url);
+            using var client = new HttpClient();
+            byte[] content = await client.GetByteArrayAsync(url);
             using var stream = new MemoryStream(content);
             using var reader = new StreamReader(stream);
-            var result = reader.ReadToEnd();
-            return await Task.FromResult(result);
+            var result = await reader.ReadToEndAsync();
+            return result;
         }
 
         private async Task<List<UserModel>> GetDataFromJsonAsync()

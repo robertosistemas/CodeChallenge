@@ -5,12 +5,7 @@ namespace CodeChallenge.Application.DataTransferObjects
 {
     public class UsersResult
     {
-        public UsersResult()
-        {
-            Users = new List<User>();
-        }
-
-        [JsonPropertyName("pageNumber")]
+         [JsonPropertyName("pageNumber")]
         public int PageNumber { get; set; }
 
         [JsonPropertyName("pageSize")]
@@ -20,6 +15,6 @@ namespace CodeChallenge.Application.DataTransferObjects
         public int TotalCount { get; set; }
 
         [JsonPropertyName("users")]
-        public List<User> Users { get; set; } = null!;
+        public List<User> Users { get; set; } = new List<User>();
     }
 }

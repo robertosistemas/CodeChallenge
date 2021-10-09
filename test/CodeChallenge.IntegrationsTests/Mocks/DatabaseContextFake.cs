@@ -9,10 +9,7 @@ namespace CodeChallenge.IntegrationsTests.Mocks
     {
         private List<UserModel> _usersModel;
 
-        public DatabaseContextFake()
-        {
-            _usersModel = new List<UserModel>();
-        }
+        public DatabaseContextFake() => _usersModel = new List<UserModel>();
 
         public Task<List<UserModel>> GetDataAsync()
         {

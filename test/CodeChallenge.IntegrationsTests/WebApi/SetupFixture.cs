@@ -5,14 +5,15 @@ namespace CodeChallenge.IntegrationsTests.WebApi
 {
     public class SetupFixture : IDisposable
     {
+        private bool disposedValue;
+
         public SetupFixture()
         {
             // ... initialize data in the test ...
-            var directoryInfo = new DirectoryInfo(Directory.GetCurrentDirectory());
 #if DEBUG
-            var appPath = directoryInfo?.Parent?.Parent?.Parent?.Parent?.Parent?.FullName;
+            var appPath = new DirectoryInfo(Directory.GetCurrentDirectory())?.Parent?.Parent?.Parent?.Parent?.Parent?.FullName;
 #else
-            var appPath = directoryInfo.FullName;
+            var appPath = new DirectoryInfo(Directory.GetCurrentDirectory()).FullName;
 #endif
             var csvFile = Path.Combine($"{appPath}", "src\\CodeChallenge.WebApi\\wwwroot\\App_Data\\output-backend.json");
             if (File.Exists(csvFile))
@@ -23,10 +24,33 @@ namespace CodeChallenge.IntegrationsTests.WebApi
                 File.Delete(JsonFile);
         }
 
-        public void Dispose()
+        protected virtual void Dispose(bool disposing)
         {
-            // ... clean up test data ...
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
         }
 
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~SetupFixture()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

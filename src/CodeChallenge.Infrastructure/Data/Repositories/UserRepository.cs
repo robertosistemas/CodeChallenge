@@ -12,10 +12,7 @@ namespace CodeChallenge.Infrastructure.Data.Repositories
     {
         protected readonly IDatabaseContext DatabaseContext;
 
-        public UserRepository(IDatabaseContext databaseContext)
-        {
-            DatabaseContext = databaseContext;
-        }
+        public UserRepository(IDatabaseContext databaseContext) => DatabaseContext = databaseContext;
 
         public async Task<Guid> AddAsync(UserModel user)
         {

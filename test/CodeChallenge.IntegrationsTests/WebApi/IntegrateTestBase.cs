@@ -8,9 +8,6 @@ namespace CodeChallenge.IntegrationsTests.WebApi
         //protected SetupFixture SetupFixture;
         protected ApiWebApplicationFactory<TStartup> Factory;
 
-        public IntegrateTestBase(ApiWebApplicationFactory<TStartup> factory)
-        {
-            Factory = factory;
-        }
+        public IntegrateTestBase(ApiWebApplicationFactory<TStartup> factory) => Factory = factory;
     }
 }
