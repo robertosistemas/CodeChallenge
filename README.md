@@ -1,4 +1,4 @@
-## Desafio Juntos Somos Mais - Backend C#
+## Desafio - Backend C#
 
 Neste desafio utilizei as seguintes arquiteturas:
 
