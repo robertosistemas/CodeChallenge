@@ -86,7 +86,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             var newUser = await GetAsync(userId);
             Assert.NotNull(newUser);
             if (newUser != null)
-                newUser.Id.ToString().Should().Equals(userId);
+                newUser.Id.ToString().Should().Be(userId);
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
                 var updatedUser = await GetAsync(userId);
                 Assert.NotNull(updatedUser);
                 if (updatedUser?.Name != default)
-                    updatedUser.Name.Last.Should().Equals("Carlos");
+                    updatedUser.Name.Last.Should().Be("Carlos");
             }
         }
 
@@ -150,7 +150,7 @@ namespace CodeChallenge.IntegrationsTests.WebApi.Controllers
             if (!string.IsNullOrWhiteSpace(payload))
             {
                 User? userMatched = JsonSerializer.Deserialize<User?>(payload);
-                userMatched?.Id.ToString().Should().Equals(userId);
+                userMatched?.Id.ToString().Should().Be(userId);
             }
         }
 

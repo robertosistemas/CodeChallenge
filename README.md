@@ -12,8 +12,9 @@ Neste desafio utilizei as seguintes arquiteturas:
 
 As Ferramentas foram:
 
+1. .net6.0
 1. Visual Studio 2019
-2. Asp.net Core 3.1
+2. Asp.net
 3. Docker
 4. Swagger para documentação e testes das APIs
 5. Banco de dados em memória e persistido como arquivo JSON na pasta wwwroot/App_Data/output-backend.json
