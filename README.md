@@ -13,7 +13,7 @@ Neste desafio utilizei as seguintes arquiteturas:
 As Ferramentas foram:
 
 1. .net6.0
-1. Visual Studio 2019
+1. Visual Studio 2022
 2. Asp.net
 3. Docker
 4. Swagger para documentação e testes das APIs
